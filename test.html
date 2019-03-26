@@ -17,14 +17,16 @@
  <div id="wrapper">
 
   <input type="file" id="input-ASF" />
+  <button type="button" id="asf-load-button">Load ASF</button>
+  <span id="asf-button-text">No file chosen yet...</span>
   <input type="file" id="input-arrestmentLog" />
   <button id="compareButton" type="button">Compare</button>
 
  </div>
  <script>
-  readExcelFile('#input-ASF')
+  loadASF()
 
-  readExcelFile('#input-arrestmentLog')
+  loadArrestmentFile()
 
   $('#compareButton').on('click', function () {
    compareItems(arr1, arr2)
