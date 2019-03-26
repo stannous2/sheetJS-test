@@ -1,122 +1,35 @@
 <html>
+
 <head>
-<!-- <script src="jquery-2.1.4.js"></script> -->
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-crossorigin="anonymous"></script>
-<!-- <script lang="javascript" src="xlsx.full.min.js"></script> -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.14.1/xlsx.full.min.js"></script>
-<!-- <link rel="stylesheet" type="text/css" href="styles.css"> -->
+ <!-- <script src="jquery-2.1.4.js"></script> -->
+ <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+  crossorigin="anonymous"></script>
+ <!-- <script lang="javascript" src="xlsx.full.min.js"></script> -->
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.14.1/xlsx.full.min.js"></script>
+ <!-- <link rel="stylesheet" type="text/css" href="styles.css"> -->
 
-<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.8.0/xlsx.js"></script> -->
-
+ <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.8.0/xlsx.js"></script> -->
+ <script src="scripts.js"></script>
 </head>
+
 <body>
-<div id="navbar"><span>Compare Excel File</span></div>
-<div id="wrapper">
-        
-        <input type="file" id="input-excel" />
-        <input type="file" id="input-excel1" />
-        <button id="compareButton" type="button">Compare</button>
+ <div id="navbar"><span>Compare Excel File</span></div>
+ <div id="wrapper">
 
-</div>
-<script>
-        var cell1, cell2;
-        var arr1 =[]
+  <input type="file" id="input-ASF" />
+  <input type="file" id="input-arrestmentLog" />
+  <button id="compareButton" type="button">Compare</button>
 
-        $('#input-excel').change(function(e){
-                var reader = new FileReader();
-                reader.readAsArrayBuffer(e.target.files[0]);
+ </div>
+ <script>
+  readExcelFile('#input-ASF')
 
-                // reader.onload = function(e) {
-                //         var data = new Uint8Array(reader.result);
-                //         var wb = XLSX.read(data,{type:'array'});
+  readExcelFile('#input-arrestmentLog')
 
-                //         var htmlstr = XLSX.write(wb,{sheet:"Sheet1", type:'binary',bookType:'html'});
-                //         $('#wrapper')[0].innerHTML += htmlstr;
-                // }
-
-                reader.onload = function(e) {
-                        var data = new Uint8Array(reader.result);
-
-                        /* read the file */
-                        var wb = XLSX.read(data,{type:'array'});//parse the file
-                        var sheet = wb.Sheets[wb.SheetNames[0]]; //get the first worksheet
-                        // console.log('sheet', sheet)
-                        // var cell1 = sheet['A1'];
-                        // console.log("A1 value: ", cell1.v)
-
-                        /* loop through every cell manually */
-                        var range = XLSX.utils.decode_range(sheet['!ref']); //get the range
-
-                        // console.log("range: ", range)
-                        var desired_range = "A1:B3"
-                        var cell_range = XLSX.utils.decode_range(desired_range)
-                        console.log("specific_range: ", cell_range)
-
-
-
-                        for(var R = cell_range.s.r; R <= cell_range.e.r; ++R) {
-                          for(var C = cell_range.s.c; C <= cell_range.e.c; ++C) {
-
-                                /* find the cell object */
-                                console.log('Row : ' + R);
-                                console.log('Column : ' + C);
-                            var cell_address = {c:C, r:R};
-
-                            /* if an A1-style address is needed, encode the address */
-                            var cell_ref = XLSX.utils.encode_cell(cell_address);
-                            console.log("cell_ref", cell_ref) // i.e. cell A1 or B3
-
-                            var cell = sheet[cell_ref]
-                            console.log("cell_value", cell.v)// i.e. cell value
-                            arr1.push(cell.v)
-                          }
-                        }
-                        console.log("array 1: ", arr1)
-                }
-        });
-
-        $('#input-excel1').change(function(e){
-                var reader = new FileReader();
-                reader.readAsArrayBuffer(e.target.files[0]);
-
-
-                reader.onload = function(e) {
-                        var data = new Uint8Array(reader.result);
-
-                        /* read the file */
-                        var wb = XLSX.read(data,{type:'array'});//parse the file
-                        var sheet = wb.Sheets[wb.SheetNames[0]]; //get the first worksheet
-                        console.log('sheet', sheet)
-                        var cell2 = sheet['A1'];
-                        console.log("A1 value: ", cell2.v)
-
-                        
-                }
-        });
-
-        $('#compareButton').on('click', function() {
-                compareCell(cell1, cell2)
-        })
-
-
-        function compareCell(c1, c2) {
-
-        console.log('inside compareObj function...')
-        // debugger
-        // for (let i = 0; i < e1.length; i++){
-        //     console.log('json_object first object', JSON.stringify(e1[i]))
-        //     console.log('json_object second object', JSON.stringify(e1[i]))
-        if (c1 === c2) {
-            console.log('it is matched!!!') 
-        } else {            
-                console.log('its not matched!!')
-            }
-        }
-        
-        
-
-
-</script>
+  $('#compareButton').on('click', function () {
+   compareItems(arr1, arr2)
+  })
+ </script>
 </body>
+
 </html>
