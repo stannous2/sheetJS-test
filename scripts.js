@@ -25,7 +25,7 @@ function loadASF() {
    /* loop through every cell in the worksheet manually */
    let range = XLSX.utils.decode_range(sheet['!ref']); //get the range
 
-   let desired_range = "AC2:DE2" // define desired range
+   let desired_range = "E2:CA2" // define desired range
    let cell_range = XLSX.utils.decode_range(desired_range) // get the desired range only
    console.log("specific_range: ", cell_range)
 
@@ -69,9 +69,9 @@ function loadArrestmentFile() {
    let sheet = wb.Sheets[wb.SheetNames[0]]; //get the first worksheet
 
    /* loop through every cell in the worksheet manually */
-   let range = XLSX.utils.decode_range(sheet['!ref']); //get the range
+  //  let range = XLSX.utils.decode_range(sheet['!ref']); //get the range
 
-   let desired_range = "AC2:DE2" // define desired range
+   let desired_range = "E2:CA2" // define desired range
    let cell_range = XLSX.utils.decode_range(desired_range) // get the desired range only
    console.log("specific_range: ", cell_range)
 
