@@ -2,13 +2,19 @@ let arr1 = [];
 let arr2 = [];
 let array;
 
-const inputButton = $('#input-ASF');
-const customButton = $('#asf-load-button');
-const customText = $('#asf-button-text');
+
+
 
 function loadASF() {
 
  $('#input-ASF').change(function (e) {
+  console.log("Getting data...")
+  if(inputButton.val()){
+   asfText.html(inputButton.val().match(/[\/\\]([\w\d\s\.\-\(\)]+)$/)[1])
+  }else {
+   asfText.html() = "No file chosen yet..."
+  }
+
   let reader = new FileReader();
   reader.readAsArrayBuffer(e.target.files[0]);
 
@@ -54,7 +60,7 @@ function loadASF() {
 
 function loadArrestmentFile() {
 
- $('#input-arrestmentLog').change(function (e) {
+ $('#input-arrestLog').change(function (e) {
   let reader = new FileReader();
   reader.readAsArrayBuffer(e.target.files[0]);
 
