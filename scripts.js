@@ -9,8 +9,8 @@ function loadASF() {
 
  $('#input-ASF').change(function (e) {
   console.log("Getting data...")
-  if(inputButton.val()){
-   asfText.html(inputButton.val().match(/[\/\\]([\w\d\s\.\-\(\)]+)$/)[1])
+  if(inputAsfButton.val()){
+   asfText.html(inputAsfButton.val().match(/[\/\\]([\w\d\s\.\-\(\)]+)$/)[1])
   }else {
    asfText.html() = "No file chosen yet..."
   }
@@ -61,6 +61,13 @@ function loadASF() {
 function loadArrestmentFile() {
 
  $('#input-arrestLog').change(function (e) {
+  console.log("Getting data...")
+  if(inputLogButton.val()){
+   arrestlogText.html(inputLogButton.val().match(/[\/\\]([\w\d\s\.\-\(\)]+)$/)[1])
+  }else {
+   arrestlogText.html() = "No file chosen yet..."
+  }
+
   let reader = new FileReader();
   reader.readAsArrayBuffer(e.target.files[0]);
 
