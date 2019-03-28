@@ -1,9 +1,10 @@
 let arr1 = [];
 let arr2 = [];
-let array;
-
-
-
+let array= [];
+let cdpStartRow;
+let cdpEndRow;
+let barricadeStartRow
+let barricadeEndRow
 
 function loadASF() {
 
@@ -29,7 +30,54 @@ function loadASF() {
    let sheet = wb.Sheets[wb.SheetNames[0]]; //get the first worksheet
 
    /* loop through every cell in the worksheet manually */
-   let range = XLSX.utils.decode_range(sheet['!ref']); //get the range
+   // let range = XLSX.utils.decode_range(sheet['!ref']); //get the range
+   // let smallerRange = "A2:DE40"
+   let range = XLSX.utils.decode_range("A2:A30");
+  
+   console.log('the whole range... ', range)
+
+   for (let R = 1; R <= range.e.r; ++R) {
+    for (let C = range.s.c; C <= range.e.c; ++C) {
+
+     /* find the cell object */
+     let cell_address = {
+      c: C,
+      r: R
+     };
+
+     /* if an A1-style address is needed, encode the address */
+     let cell_ref = XLSX.utils.encode_cell(cell_address);
+     console.log('cell_ref: ', cell_ref)
+
+     let cell = sheet[cell_ref]
+     debugger
+     //get the cell ref where its value contains 'CDP 1,2,3,4'
+     if(cell){
+      if (cell.v.includes("CDP")){
+       console.log('cell ref ', C, R)
+       let cdpStartRow_address = {c: C, r: R+1} // create a new cell_address obj
+       console.log ('cell_address', cdpStartRow_address)
+       cdpStartRow = XLSX.utils.encode_cell(cdpStartRow_address);// create new cell ref for CDP start row
+       
+       console.log("cdp start row: ", cdpStartRow)
+       
+       debugger
+        if(cell){
+         console.log('cell ref ', C, R)
+        let cdpEndRow_cell_address = {c: C, r: R-1} // create a new cell_address obj
+          console.log ('cell_address', cdpEndRow_cell_address)
+          cdpEndRow = XLSX.utils.encode_cell(cdpEndRow_cell_address);// create new cell ref for CDP start row
+          
+          console.log("cdp end row: ", cdpEndRow)
+        }
+      }
+      
+     }
+     }
+     
+    }
+   
+   console.log("entire worksheet: ", array)
 
    let desired_range = "E2:CA2" // define desired range
    let cell_range = XLSX.utils.decode_range(desired_range) // get the desired range only
