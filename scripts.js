@@ -11,6 +11,7 @@ let barricadeEndRow;
 let barricadeArray = [];
 let counter = 0;
 let dynamicArray = [];
+let headerArray = ["recoveryType", "Aircraft Type", "xTrack", "Kic", "Kd", "Joff", "Aircraft Mass", "Aircraft Thrust", "Id", "kFactor", "Blanking Plate", "XF", "KicFactor", "KdFactor", "XfFactor", "velocityThreshold", "Shock Absorber", "Cable Span", "KalmanQ11", "KalmanQ22", " KalmanVelocityInit", "KalmanPositionOffset", "KalmanR50", "KalmanR100", "KalmanR150", "CsaExponent", "CsaTimeConstant", "CsaPayoutOffset", "InvOmegaFilterBandwidth", "InvObserverBandwidthGain", "InvObserverDampingGain", "OmegaNotchEnable", "SteeringGain", "CatchThreshold", "BoostEnable", "CatchP", "CatchI", "CatchErrorFilter", "TrackP", "TrackI", "TrackD", "TrackErrorFilter", "rackLeadFilter", "InitAccelerationGain", "LoadingRate", "CsaVelocityGain", "DesiredAlphaGain", "DesiredAlphaFilter", "TwisterTorqueGain", "CableTensionGain", "MaxRunoutVelocity", "MinRunoutVelocity", "MinRunout", "PressureDetectionEnable", "PressureEnableSpeed", "PressureDisableSpeed", "KFactorGain", "KFactorThreshold", "PressurePowerGain", "PressurePowerThreshold", "PressureEdgeThreshold", "PressureEdgePower", "MaxDumpEnergyMotor", "MaxDumpEnergyBrake", "MaxEnergyXtrack", "MaxEnergyXf", "MinMotorEfficiency", "MaxMotorEfficiency", "OverrideThreshold", "BrakeModelDelay", "BrakeTorqueGain", "BrakePhaseIn", "TorqueThreshold", "PercentTorqueBrake", "SafetynetEnvelope", "SafetynetThreshold", "SafetynetP", "SafetynetI", "SafetynetD", "SafetynetFilter", "SafetynetLeadFilter", "MinDriftCounts", "MaxDriftCounts"]
 
 function loadASF() {
 
@@ -22,8 +23,10 @@ function loadASF() {
    asfText.html() = "No file chosen yet..."
   }
 
-  getFirstLastRows(e);
-  getCdpAircraftSettings(e);
+  // getFirstLastRows(e);
+  // getCdpAircraftSettings(e);
+  // getBarricadeAircraftSettings(e)
+  loadArrestmentFile(e);
 
  });
 }
@@ -81,33 +84,19 @@ function getFirstLastRows(e) {
 
      }
      if (cell.v === ("Barricade 3,4")) {
-      // console.log('cell ref ', C, R)
-
-      //set ending row address of CDP
-      // let cdpEndRow_address = {
-      //   c: C,
-      //   r: R - 1
-      // } // create a new cell_address obj
-      // // console.log('cdpEndRow_cell_address', cdpEndRow_cell_address)
-      // cdpEndRow = XLSX.utils.encode_cell(cdpEndRow_address); // create new cell ref for CDP end row
-
-      // console.log("cdp end row: ", cdpEndRow)
-
-
+      
       //set starting row address for Barricade
       let barricadeStartRow_address = {
        c: C,
        r: R + 1
       } // create a new cell_address obj for barricade
-      // console.log('barricadeStartRow_address for ', barricadeStartRow_address)
+ 
       barricadeStartRow = XLSX.utils.encode_cell(barricadeStartRow_address); // create new cell ref for Barricade start row
       // console.log("barricade start row: ", barricadeStartRow)
      }
 
     }
     if (!cell) {
-     //  console.log('cell ref for empty row... ', C, R)
-
      if (counter === 1) {
       // create a new cdpEndRow_address obj
       let cdpEndRow_address = {
@@ -115,7 +104,6 @@ function getFirstLastRows(e) {
        r: R - 1
       }
       cdpEndRow = XLSX.utils.encode_cell(cdpEndRow_address);
-      // console.log('cdpEndRow_address ', cdpEndRow_address)
      } else if (counter === 2) {
       // create the barricadeEndRow_address obj
       barricadeEndRow_address = {
@@ -140,8 +128,6 @@ function getFirstLastRows(e) {
 }
 
 function getCdpAircraftSettings(e) {
- console.log('inside getCdpAircraftSettings()')
-
  let reader = new FileReader();
  reader.readAsArrayBuffer(e.target.files[0]);
 
@@ -170,12 +156,10 @@ function getCdpAircraftSettings(e) {
 
     /* if an A1-style address is needed, encode the address */
     let cell_ref = XLSX.utils.encode_cell(cell_address);
-    // console.log('cell_ref: ', cell_ref)
-    debugger
     let cell = sheet[cell_ref]
-
-    if (cell && cell.v !== 250 && cell.v !== 375 && cell.v !== 7) {
-
+debugger
+    // if (cell && cell.v !== 250 && cell.v !== 375 && cell.v !== 7) {
+      if (cell && cell_address.c !== 'L' && cell_address.c !== 'N' && cell_address.c !== 'U') {
      (dynamicArray).push(cell.v)
     } else if (!cell) {
      // create a new cdpEndRow_address obj
@@ -187,7 +171,6 @@ function getCdpAircraftSettings(e) {
      range.e.c = cdpEndCell_address.c;
     }
    }
-   console.log('dynamicArray... ', dynamicArray)
    cdpArray.push(dynamicArray);
    dynamicArray = [];
   }
@@ -195,6 +178,57 @@ function getCdpAircraftSettings(e) {
  }
 }
 
+function getBarricadeAircraftSettings(e) {
+  let reader = new FileReader();
+  reader.readAsArrayBuffer(e.target.files[0]);
+ 
+  reader.onload = function (e) {
+   let data = new Uint8Array(reader.result);
+ 
+   /* read the file */
+   let wb = XLSX.read(data, {
+    type: 'array'
+   }); //parse the file
+ 
+   let sheet = wb.Sheets[wb.SheetNames[0]]; //get the first worksheet
+ 
+   barricade_range = barricadeStartRow + ":CN13"
+   let range = XLSX.utils.decode_range(barricade_range); //get all columns of row 13
+ 
+   for (let R = cdpStartRow_address.r; R <= range.e.r; ++R) {
+    for (let C = range.s.c; C <= range.e.c; ++C) {
+ 
+     /* find the cell object */
+     let cell_address = {
+      c: C,
+      r: R
+     };
+ 
+     /* if an A1-style address is needed, encode the address */
+     let cell_ref = XLSX.utils.encode_cell(cell_address);
+     debugger
+     let cell = sheet[cell_ref]
+ 
+     if (cell && cell_address.c !== 'L' && cell_address.c !== 'N' && cell_address.c !== 'U') {
+ 
+      (dynamicArray).push(cell.v)
+     } else if (!cell) {
+      // create a new cdpEndRow_address obj
+      let barricadeEndCell_address = {
+       c: C - 1,
+       r: R
+      }
+      cdpEndCell = XLSX.utils.encode_cell(barricadeEndCell_address);
+      range.e.c = barricadeEndCell_address.c;
+     }
+    }
+    barricadeArray.push(dynamicArray);
+    dynamicArray = [];
+   }
+   console.log('barricadeArray... ', barricadeArray)
+  }
+ }
+ 
 function loadArrestmentFile() {
 
  $('#input-arrestLog').change(function (e) {
@@ -217,9 +251,11 @@ function loadArrestmentFile() {
    }); //parse the file
 
    let sheet = wb.Sheets[wb.SheetNames[0]]; //get the first worksheet
-
-   /* loop through every cell in the worksheet manually */
-   //  let range = XLSX.utils.decode_range(sheet['!ref']); //get the range
+debugger
+   for(let i = 0; i < headerArray.length; i++){
+     let cell_address = sheet[i.v]
+     console.log('cell_address ', cell_address)
+   }
 
    let desired_range = "E2:CA2" // define desired range
    let cell_range = XLSX.utils.decode_range(desired_range) // get the desired range only
