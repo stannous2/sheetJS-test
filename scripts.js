@@ -146,9 +146,9 @@ function getCdpAircraftSettings(e) {
   let sheet = wb.Sheets[wb.SheetNames[0]]; //get the first worksheet
 
   cdp_range = cdpStartRow + ":CN13"
-  console.log('cdp_range ', cdp_range)
+  // console.log('cdp_range ', cdp_range)
   let range = XLSX.utils.decode_range(cdp_range); //get all columns of row 13
-debugger
+
   for (let R = cdpStartRow_address.r; R <= range.e.r; ++R) {
    for (let C = range.s.c; C <= range.e.c; ++C) {
 
@@ -163,7 +163,7 @@ debugger
     let cell = sheet[cell_ref]
     
     // if (cell && cell.v !== 250 && cell.v !== 375 && cell.v !== 7) {
-    if (cell && cell_address.c !== 'L' && cell_address.c !== 'N' && cell_address.c !== 'U') {
+    if (cell && cell_address.c !== 11 && cell_address.c !== 13 && cell_address.c !== 20) {
      (nestedArray).push(cell.v)
     } else if (!cell) {
      // create a new cdpEndRow_address obj
@@ -178,7 +178,7 @@ debugger
    cdpArray.push(nestedArray);
    nestedArray = [];
   }
-  console.log('cdpArray... ', cdpArray)
+  // console.log('cdpArray... ', cdpArray)
 
  //  console.log('first value ', cdpArray[1][1])
  //  let aircraftType = cdpArray[1][0];
@@ -217,7 +217,7 @@ function getBarricadeAircraftSettings(e) {
     
     let cell = sheet[cell_ref]
 
-    if (cell && cell_address.c !== 'L' && cell_address.c !== 'N' && cell_address.c !== 'U') {
+    if (cell && cell_address.c !== 11 && cell_address.c !== 13 && cell_address.c !== 20) {
 
      (nestedArray).push(cell.v)
     } else if (!cell) {
@@ -234,7 +234,7 @@ function getBarricadeAircraftSettings(e) {
    barricadeArray.push(nestedArray);
    nestedArray = [];
   }
-  console.log('barricadeArray... ', barricadeArray)
+  // console.log('barricadeArray... ', barricadeArray)
  }
 }
 
@@ -300,9 +300,9 @@ function loadArrestmentFile() {
        }
       }
      }
-     console.log('Arrest Log array ', arrestLogArray)
-     console.log('aircraft type: ', arrestLogArray[1])
-     console.log('isCDP prior...', isCDP)
+    //  console.log('Arrest Log array ', arrestLogArray)
+    //  console.log('aircraft type: ', arrestLogArray[1])
+    //  console.log('isCDP prior...', isCDP)
 
      if(arrestLogArray[0] === 0){
       isCDP = true;
@@ -316,10 +316,10 @@ function loadArrestmentFile() {
 
 function compareItems() {
  console.log('inside compareObj function...')
- debugger
+//  debugger
  let asfArray = [];
  let aircraftType = arrestLogArray[1];
- console.log('arrestment-log aircraft type: ', aircraftType)
+//  console.log('arrestment-log aircraft type: ', aircraftType)
 
 
  
@@ -327,24 +327,24 @@ function compareItems() {
   for(let i = 0; i < cdpArray.length; i++){
    if(cdpArray[i][0] === aircraftType){
     asfArray = cdpArray[i];
-    console.log('asf ac type selected: ', asfArray[i])
+    // console.log('asf ac type selected: ', asfArray[i])
    }
   }
   }else {
    for(let i = 0; i < barricadeArray.length; i++){
     if(barricadeArray[i][0] === aircraftType){
      asfArray = barricadeArray[i];
-     console.log('asf ac type selected: ', barricadeArray[i])
+    //  console.log('asf ac type selected: ', barricadeArray[i])
     }
  }
 }
  for(let i = 2; i < arrestLogArray.length; i++){
   if (asfArray[i] === arrestLogArray[i]) {
-     console.log(asfArray[i] + ", " + arrestLogArray[i]);
-     console.log('it is matched!!!');
+     console.log(asfArray[i] + ", " + arrestLogArray[i] + '  it is matched!!!');
+    //  console.log('it is matched!!!');
     } else {
-     console.log(asfArray[i] + ", " + arrestLogArray[i]);
-     console.log('its not matched!!');
+     console.log(asfArray[i] + ", " + arrestLogArray[i] + '  its not matched!!');
+    //  console.log('its not matched!!');
     }
  }
 
