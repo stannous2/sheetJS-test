@@ -332,16 +332,20 @@ function compareItems() {
      }
    }
  }
- debugger
+//  debugger
  for (i = 0; i < asfArray.length; i++){
-  asfDataCell += "<td>" + asfArray[i] + "</td>"
+  asfDataCell += "<td>" + asfArray[i].toFixed(1) + "</td>"
  }
   asfRow =  "<tr><td>" + asfDataCell + "</td></tr>"
   $("table tbody").append(asfRow)
 
   for (let i = 1; i < arrestLogArray.length; i++) {
-   arrestDataCell += "<td>" + arrestLogArray[i] + "</td>"
-   diff = asfArray[i-1] - arrestLogArray[i];      
+   arrestDataCell += "<td>" + arrestLogArray[i].toFixed(1) + "</td>"
+   diff = Math.abs((asfArray[i-1] - arrestLogArray[i]).toFixed(1));
+  //  debugger
+  //  if (diff > 0){
+  //    $(diffCell[i]).css("color", "yellow")
+  //  }
    diffCell += "<td>" + diff + "</td>"
    
    if (asfArray[i-1] === arrestLogArray[i]) {
