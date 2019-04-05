@@ -319,20 +319,9 @@ function compareItems() {
   let arrestDataCell = "Arrest Data"
   let asfRow
   let asfDataCell  = "ASF Data"
-  
-  // if (isCDP) {
-  //   for (let i = 0; i < cdpArray.length; i++) {
-  //     if (cdpArray[i][0] === aircraftType) {
-  //       asfArray = cdpArray[i];
-  //     }
-  //   }
-  // } else {
-  //   for (let i = 0; i < barricadeArray.length; i++) {
-  //     if (barricadeArray[i][0] === aircraftType) {
-  //       asfArray = barricadeArray[i];
-  //     }
-  //   }
-  // }
+  let diffCell = "Difference"
+  let diffRow
+  let diff = 0
 
   if (isCDP) {
    for (let i = 0; i < cdpArray.length; i++) {
@@ -352,18 +341,22 @@ function compareItems() {
 
   for (let i = 1; i < arrestLogArray.length; i++) {
    arrestDataCell += "<td>" + arrestLogArray[i] + "</td>"
-    if (asfArray[i] === arrestLogArray[i]) {
-      let diff = asfArray[i] - arrestLogArray[i];      
-      console.log(asfArray[i] + " - " + arrestLogArray[i] + ' = ' + diff);
-      
-    } else {
-      let diff = asfArray[i] - arrestLogArray[i];
-      console.log(asfArray[i] + " - " + arrestLogArray[i] + ' = ' + diff);
-    }
+   diff = asfArray[i-1] - arrestLogArray[i];      
+   diffCell += "<td>" + diff + "</td>"
+   
+   if (asfArray[i-1] === arrestLogArray[i]) {
+    console.log(asfArray[i-1] + " - " + arrestLogArray[i] + ' = ' + diff);
+    
+   } else {
+    console.log(asfArray[i-1] + " - " + arrestLogArray[i] + ' = ' + diff);
    }
+  }
    debugger
    arrestRow = "<tr><td>" + arrestDataCell + "</td></tr>"
    $("table tbody").append(arrestRow)
+
+   diffRow = "<tr><td>" + diffCell + "</td></tr>"
+   $("table tbody").append(diffRow)
   
 }
 
