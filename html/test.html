@@ -6,10 +6,10 @@
   integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
  <!-- <script lang="javascript" src="xlsx.full.min.js"></script> -->
  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.14.1/xlsx.full.min.js"></script>
- <!-- <link rel="stylesheet" type="text/css" href="styles.css"> -->
+ <link rel="stylesheet" type="text/css" href="../css/style.css">
 
  <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.8.0/xlsx.js"></script> -->
- <script src="scripts.js"></script>
+ <script src="../scripts/scripts.js"></script>
 </head>
 
 <body>
@@ -25,6 +25,26 @@
   <span id="arrestlog-button-text">Select an arrestment log...</span>
 
   <button id="compareButton" type="button">Compare</button>
+
+  <!-- <span>
+   <div id="table" style="background-color:aliceblue; width: 700px; height: 200px" >
+
+   </div>
+  </span> -->
+
+  <table id="table" style="background-color:aliceblue; width: 700px; height: 200px">
+   <thead>
+       <tr>
+           
+       </tr>
+   </thead>
+   <tbody>
+       <tr>
+           
+           
+       </tr>
+   </tbody>
+</table>
 
  </div>
  <script>
@@ -47,7 +67,6 @@
    inputLogButton.click()
    loadArrestmentFile()
   })
-
 
   $('#compareButton').on('click', function () {
    compareItems()
