@@ -316,7 +316,7 @@ function compareItems() {
   arrestDataCell += "<td>" + arrestLogArray[i].toFixed(1) + "</td>"
   diff = Math.abs((asfArray[i - 1] - arrestLogArray[i]).toFixed(1));
    if (diff > 0.2){
-    $("table tbody tr td")[i].style.backgroundColor = "yellow"
+    $("td")[i].style.backgroundColor = "yellow"
    }
   diffCell += "<td>" + diff + "</td>"
 
