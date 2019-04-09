@@ -26,14 +26,14 @@ function loadASF() {
    asfText.html() = "No file chosen yet..."
   }
 
-  getFirstLastRows(e);
+  getFirstLastRowsAsfFile(e);
   createTable(headerArray)
   getCdpAircraftSettings(e);
   getBarricadeAircraftSettings(e)
  });
 }
 
-function getFirstLastRows(e) {
+function getFirstLastRowsAsfFile(e) {
 
  let reader = new FileReader();
  reader.readAsArrayBuffer(e.target.files[0]);
@@ -185,7 +185,7 @@ function getBarricadeAircraftSettings(e) {
   }); //parse the file
 
   let sheet = wb.Sheets[wb.SheetNames[0]]; //get the first worksheet
-
+  
   barricade_range = barricadeStartRow + ":CN" + (barricadeEndRow_address.r + 1);
   let range = XLSX.utils.decode_range(barricade_range); //get all columns of row 13
 
@@ -227,7 +227,12 @@ function getBarricadeAircraftSettings(e) {
 function loadArrestmentFile() {
  $('#input-arrestLog').change(function (e) {
   console.log("Load Arretment Log button is clicked...")
-
+  var files = $("#input-arrestLog")[0].files;
+  for (let i=0; i<files.length; i++){
+    $("#arrestLogFiles").append(inputLogButton.val().match(/[\/\\]([\w\d\s\.\-\(\)]+)$/)[i])
+    
+  }
+  debugger
   if (inputLogButton.val()) {
    arrestlogText.html(inputLogButton.val().match(/[\/\\]([\w\d\s\.\-\(\)]+)$/)[1])
   } else {
