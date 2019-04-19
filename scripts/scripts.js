@@ -11,7 +11,9 @@ let counter = 0;
 let isCDP = true;
 let nestedArray = [];
 let cdpArray = [];
+let cdpArrestArray = [];
 let barricadeArray = [];
+let barricadeArrestArray = [];
 let arrestLogArray = []
 let headerArray = ["recoveryType", "Aircraft Type", "xTrack", "Kic", "Kd", "Joff", "Aircraft Mass", "Aircraft Thrust", "Id", "kFactor", "Blanking Plate", "XF", "KicFactor", "KdFactor", "XfFactor", "velocityThreshold", "Shock Absorber", "Cable Span", "KalmanQ11", " KalmanQ22", " KalmanVelocityInit", " KalmanPositionOffset", " KalmanR50", " KalmanR100", " KalmanR150", " CsaExponent", " CsaTimeConstant", " CsaPayoutOffset", " InvOmegaFilterBandwidth", " InvObserverBandwidthGain", " InvObserverDampingGain", " OmegaNotchEnable", " SteeringGain", " CatchThreshold", " BoostEnable", " CatchP", " CatchI", " CatchErrorFilter", " TrackP", " TrackI", " TrackD", " TrackErrorFilter", " TrackLeadFilter", " InitAccelerationGain", " LoadingRate", " CsaVelocityGain", " DesiredAlphaGain", " DesiredAlphaFilter", " TwisterTorqueGain", " CableTensionGain", " MaxRunoutVelocity", " MinRunoutVelocity", " MinRunout", " PressureDetectionEnable", " PressureEnableSpeed", " PressureDisableSpeed", " KFactorGain", " KFactorThreshold", " PressurePowerGain", " PressurePowerThreshold", " PressureEdgeThreshold", " PressureEdgePower", " MaxDumpEnergyMotor", " MaxDumpEnergyBrake", " MaxEnergyXtrack", " MaxEnergyXf", " MinMotorEfficiency", " MaxMotorEfficiency", " OverrideThreshold", " BrakeModelDelay", " BrakeTorqueGain", " BrakePhaseIn", " TorqueThreshold", " PercentTorqueBrake", " SafetynetEnvelope", " SafetynetThreshold", " SafetynetP", " SafetynetI", " SafetynetD", " SafetynetFilter", " SafetynetLeadFilter", " MinDriftCounts", " MaxDriftCounts"]
 let strTable = "";
@@ -185,7 +187,7 @@ function getBarricadeAircraftSettings(e) {
   }); //parse the file
 
   let sheet = wb.Sheets[wb.SheetNames[0]]; //get the first worksheet
-  
+
   barricade_range = barricadeStartRow + ":CN" + (barricadeEndRow_address.r + 1);
   let range = XLSX.utils.decode_range(barricade_range); //get all columns of row 13
 
@@ -227,67 +229,78 @@ function getBarricadeAircraftSettings(e) {
 function loadArrestmentFile() {
  $('#input-arrestLog').change(function (e) {
   console.log("Load Arretment Log button is clicked...")
-  var files = $("#input-arrestLog")[0].files;
-  for (let i=0; i<files.length; i++){
-    $("#arrestLogFiles").append(inputLogButton.val().match(/[\/\\]([\w\d\s\.\-\(\)]+)$/)[i])
-    
-  }
+  let fileList = []
   debugger
-  if (inputLogButton.val()) {
-   arrestlogText.html(inputLogButton.val().match(/[\/\\]([\w\d\s\.\-\(\)]+)$/)[1])
-  } else {
-   arrestlogText.html() = "No file chosen yet..."
-  }
+  var files = inputLogFile[0].files;
+  for (let i = 0; i < files.length; i++) {
+   // $("#arrestLogFileName").append(inputLogFile.val().match(/[\/\\]([\w\d\s\.\-\(\)]+)$/)[i])
+   $("#arrestLogFileName").append(files[i].name + ", ")
 
-  let reader = new FileReader();
-  reader.readAsArrayBuffer(e.target.files[0]);
-
-  reader.onload = function (e) {
-   let data = new Uint8Array(reader.result);
-
-   /* read the file */
-   let wb = XLSX.read(data, {
-    type: 'array'
-   }); //parse the file
-
-   let sheet = wb.Sheets[wb.SheetNames[0]]; //get the first worksheet
-
-   let cell_range = XLSX.utils.decode_range("A1:DZ1") // get the desired range only
-
-   for (let R = cell_range.s.r; R <= cell_range.e.r; ++R) {
-    for (let C = cell_range.s.c; C <= cell_range.e.c; ++C) {
-
-     /* build the cell object */
-     let cell_address = {
-      c: C,
-      r: R
-     };
-
-     /* if an A1-style address is needed, encode the address */
-     let cell_ref = XLSX.utils.encode_cell(cell_address);
-     let cell = sheet[cell_ref]
-
-     if (cell && headerArray.includes(cell.v)) {
-      let headerValue_address = {
-       c: C,
-       r: R + 1
-      }
-
-      let headerValue = XLSX.utils.encode_cell(headerValue_address)
-      let cellValue = sheet[headerValue]
-      arrestLogArray.push(cellValue.v)
-     } 
-    }
+   if (inputLogFile.val()) {
+    // arrestlogText.append(inputLogFile.val().match(/[\/\\]([\w\d\s\.\-\(\)]+)$/)[i] + " ")
+    arrestlogText.append(files[i].name + ", ")
+   } else {
+    arrestlogText.html() = "No file chosen yet..."
    }
-   debugger
-   if (arrestLogArray[0] !== 0) {
-    isCDP = false;
-   } 
-   console.log('CDP arrest mode? ', isCDP)
-   $('#compareButton').prop('disabled', false)
+   let reader = new FileReader();
+   reader.readAsArrayBuffer(e.target.files[i]);
+
+   reader.onload = function (e) {
+    let data = new Uint8Array(reader.result);
+
+    /* read the file */
+    let wb = XLSX.read(data, {
+     type: 'array'
+    }); //parse the file
+
+    let sheet = wb.Sheets[wb.SheetNames[0]]; //get the first worksheet
+
+    let cell_range = XLSX.utils.decode_range("A1:DZ1") // get the desired range only
+
+    // debugger
+    for (let R = cell_range.s.r; R <= cell_range.e.r; ++R) {
+     for (let C = cell_range.s.c; C <= cell_range.e.c; ++C) {
+
+      /* build the cell object */
+      let cell_address = {
+       c: C,
+       r: R
+      };
+
+      /* if an A1-style address is needed, encode the address */
+      let cell_ref = XLSX.utils.encode_cell(cell_address);
+      let cell = sheet[cell_ref]
+
+      if (cell && headerArray.includes(cell.v)) {
+       let headerValue_address = {
+        c: C,
+        r: R + 1
+       }
+
+       let headerValue = XLSX.utils.encode_cell(headerValue_address)
+       let cellValue = sheet[headerValue]
+       arrestLogArray.push(cellValue.v)
+
+      }
+     } // end of for loop
+    } // end of for loop
+    debugger
+    // check to see if arrestment is in CDP or Barricade mode
+    if (arrestLogArray[0] !== 0) {
+     isCDP = false;
+     barricadeArrestArray.push(arrestLogArray)
+    } else {
+     cdpArrestArray.push(arrestLogArray)
+    }
+    debugger
+    console.log('CDP arrest mode? ', isCDP)
+   } //end of for loop
+
+   
+   $('#compareButton').prop('disabled', false)// enable the compareBtn when parsing is completed
   }
  });
-}
+} //end of function loadArrestmentFile()
 
 function compareItems() {
  console.log('inside compareObj function...')
@@ -320,9 +333,9 @@ function compareItems() {
  for (let i = 1; i < arrestLogArray.length; i++) {
   arrestDataCell += "<td>" + arrestLogArray[i].toFixed(1) + "</td>"
   diff = Math.abs((asfArray[i - 1] - arrestLogArray[i]).toFixed(1));
-   if (diff > 0.2){
-    $("td")[i].style.backgroundColor = "yellow"
-   }
+  if (diff > 0.2) {
+   $("td")[i].style.backgroundColor = "yellow"
+  }
   diffCell += "<td>" + diff + "</td>"
 
  }

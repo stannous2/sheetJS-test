@@ -22,7 +22,7 @@
 
   <input type="file" id="input-arrestLog" multiple="multiple" hidden="hidden" />
   <button type="button" id="arrestlog-load-button">Load Arrestment Log</button>
-  <span id="arrestlog-button-text">Select an arrestment log...</span>
+  <span id="arrestlog-button-text">No file chosen yet...</span>
 
   <button id="compareButton" type="button" disabled="disabled">Compare</button>
 
@@ -32,8 +32,8 @@
   </table>
 
   <!-- Drag and Drop container-->
-  <div class="arrestLog-area"  id="arrestLogFiles">
-    <h4>Drag and Drop ASF file here<br/>Or<br/>Click to select file</h4>
+  <div class="arrestLog-area"  id="arrestLogFileName">
+    <h4>Drag and Drop ASF file here</h4>
 </div>
 
  </div>
@@ -42,7 +42,7 @@
   const loadAsfButton = $('#asf-load-button');
   const asfText = $('#asf-button-text');
 
-  const inputLogButton = $('#input-arrestLog')
+  const inputLogFile = $('#input-arrestLog')
   const loadLogButton = $('#arrestlog-load-button')
   const arrestlogText = $('#arrestlog-button-text')
 
@@ -54,7 +54,7 @@
 
   loadLogButton.on('click', function () {
    console.log('loadLogButton is clicked... ')
-   inputLogButton.click()
+   inputLogFile.click()
    loadArrestmentFile()
   })
 
