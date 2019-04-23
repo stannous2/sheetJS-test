@@ -229,7 +229,7 @@ function getBarricadeAircraftSettings(e) {
 function loadArrestmentFile() {
  $('#input-arrestLog').change(function (e) {
   console.log("Load Arretment Log button is clicked...")
-  let fileList = []
+  // let fileList = []
   debugger
   var files = inputLogFile[0].files;
   for (let i = 0; i < files.length; i++) {
@@ -257,7 +257,7 @@ function loadArrestmentFile() {
 
     let cell_range = XLSX.utils.decode_range("A1:DZ1") // get the desired range only
 
-    // debugger
+    debugger
     for (let R = cell_range.s.r; R <= cell_range.e.r; ++R) {
      for (let C = cell_range.s.c; C <= cell_range.e.c; ++C) {
 
@@ -284,19 +284,21 @@ function loadArrestmentFile() {
       }
      } // end of for loop
     } // end of for loop
-    debugger
+    console.log("arrest Log Array ", arrestLogArray)
     // check to see if arrestment is in CDP or Barricade mode
     if (arrestLogArray[0] !== 0) {
      isCDP = false;
      barricadeArrestArray.push(arrestLogArray)
+     console.log("barricade Array ", barricadeArrestArray)
     } else {
      cdpArrestArray.push(arrestLogArray)
+     console.log('cdp Arrest Array', cdpArrestArray)
     }
     debugger
     console.log('CDP arrest mode? ', isCDP)
-   } //end of for loop
+   } //end of function reader.onload()
 
-   
+   // enable the "Compare button" only when both ASF and Arrest Log files are succefully loaded.
    $('#compareButton').prop('disabled', false)// enable the compareBtn when parsing is completed
   }
  });
