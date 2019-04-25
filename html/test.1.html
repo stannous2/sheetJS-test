@@ -1,0 +1,67 @@
+<html>
+
+<head>
+ <!-- <script src="jquery-2.1.4.js"></script> -->
+ <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+  integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+ <!-- <script lang="javascript" src="xlsx.full.min.js"></script> -->
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.14.1/xlsx.full.min.js"></script>
+ <link rel="stylesheet" type="text/css" href="../css/style.css">
+
+ <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.8.0/xlsx.js"></script> -->
+ <script src="../scripts/scripts.js"></script>
+</head>
+
+<body>
+ <div id="navbar"><span>Compare Excel File</span></div>
+ <div id="wrapper">
+
+  <input type="file" id="input-ASF" hidden="hidden" />
+  <button type="button" id="asf-load-button">Load ASF</button>
+  <span id="asf-button-text">No file chosen yet...</span>
+
+  <input type="file" id="input-arrestLog" multiple="multiple" hidden="hidden" />
+  <button type="button" id="arrestlog-load-button">Load Arrestment Log</button>
+  <span id="arrestlog-button-text">Select an arrestment log...</span>
+
+  <button id="compareButton" type="button" disabled="disabled">Compare</button>
+
+  <table id="table" style="background-color:aliceblue; width: 700px; height: 200px">
+   <tbody>
+   </tbody>
+  </table>
+
+  <!-- Drag and Drop container-->
+  <div class="arrestLog-area"  id="arrestLogFiles">
+    <h4>Drag and Drop ASF file here<br/>Or<br/>Click to select file</h4>
+</div>
+
+ </div>
+ <script>
+  const inputAsfButton = $('#input-ASF');
+  const loadAsfButton = $('#asf-load-button');
+  const asfText = $('#asf-button-text');
+
+  const inputArrestLogButton = $('#input-arrestLog')
+  const loadLogButton = $('#arrestlog-load-button')
+  const arrestlogText = $('#arrestlog-button-text')
+
+  loadAsfButton.on('click', function () {
+   console.log('loadAsfButton is clicked... ')
+   inputAsfButton.click()
+   loadASF()
+  })
+
+  loadLogButton.on('click', function () {
+   console.log('loadLogButton is clicked... ')
+   inputArrestLogButton.click()
+   loadArrestmentFile()
+  })
+
+  $('#compareButton').on('click', function () {
+   compareItems()
+  })
+ </script>
+</body>
+
+</html>
