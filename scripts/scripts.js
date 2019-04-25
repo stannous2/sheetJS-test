@@ -336,6 +336,7 @@ function compareItems() {
        }
        asfRow = "<tr><td>" + asfDataCell + "</td></tr>"
        $("table tbody").append(asfRow)
+       arrestmentArray = arrestmentArray.pop(arrestmentArray[i])
     }else if(arrestmentArray[i][0] === 1){
       console.log('it is barricade arrestment... ')
     }
