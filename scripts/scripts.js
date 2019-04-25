@@ -9,12 +9,13 @@ let barricadeStartRow;
 let barricadeEndRow;
 let counter = 0;
 let isCDP = true;
-let nestedArray = [];
-let cdpArray = [];
-let cdpArrestArray = [];
-let barricadeArray = [];
-let barricadeArrestArray = [];
-let arrestLogArray = []
+let asfTmpArray = [];
+let asfCdpArray = [];
+let asfBarricadeArray = [];
+let arrestCdpArray = [];
+let arrestBarricadeArray = [];
+let tmpArray = [];
+let arrestmentArray = [];
 let headerArray = ["recoveryType", "Aircraft Type", "xTrack", "Kic", "Kd", "Joff", "Aircraft Mass", "Aircraft Thrust", "Id", "kFactor", "Blanking Plate", "XF", "KicFactor", "KdFactor", "XfFactor", "velocityThreshold", "Shock Absorber", "Cable Span", "KalmanQ11", " KalmanQ22", " KalmanVelocityInit", " KalmanPositionOffset", " KalmanR50", " KalmanR100", " KalmanR150", " CsaExponent", " CsaTimeConstant", " CsaPayoutOffset", " InvOmegaFilterBandwidth", " InvObserverBandwidthGain", " InvObserverDampingGain", " OmegaNotchEnable", " SteeringGain", " CatchThreshold", " BoostEnable", " CatchP", " CatchI", " CatchErrorFilter", " TrackP", " TrackI", " TrackD", " TrackErrorFilter", " TrackLeadFilter", " InitAccelerationGain", " LoadingRate", " CsaVelocityGain", " DesiredAlphaGain", " DesiredAlphaFilter", " TwisterTorqueGain", " CableTensionGain", " MaxRunoutVelocity", " MinRunoutVelocity", " MinRunout", " PressureDetectionEnable", " PressureEnableSpeed", " PressureDisableSpeed", " KFactorGain", " KFactorThreshold", " PressurePowerGain", " PressurePowerThreshold", " PressureEdgeThreshold", " PressureEdgePower", " MaxDumpEnergyMotor", " MaxDumpEnergyBrake", " MaxEnergyXtrack", " MaxEnergyXf", " MinMotorEfficiency", " MaxMotorEfficiency", " OverrideThreshold", " BrakeModelDelay", " BrakeTorqueGain", " BrakePhaseIn", " TorqueThreshold", " PercentTorqueBrake", " SafetynetEnvelope", " SafetynetThreshold", " SafetynetP", " SafetynetI", " SafetynetD", " SafetynetFilter", " SafetynetLeadFilter", " MinDriftCounts", " MaxDriftCounts"]
 let strTable = "";
 
@@ -156,7 +157,7 @@ function getCdpAircraftSettings(e) {
 
     // if (cell && cell.v !== 250 && cell.v !== 375 && cell.v !== 7) {
     if (cell && cell_address.c !== 1 && cell_address.c !== 11 && cell_address.c !== 13 && cell_address.c !== 20) {
-     (nestedArray).push(cell.v)
+     (asfTmpArray).push(cell.v)
     } else if (!cell) {
      // create a new cdpEndRow_address obj
      let cdpEndCell_address = {
@@ -167,10 +168,10 @@ function getCdpAircraftSettings(e) {
      range.e.c = cdpEndCell_address.c;
     }
    }
-   cdpArray.push(nestedArray);
-   nestedArray = [];
+   asfCdpArray.push(asfTmpArray);
+   asfTmpArray = [];
   }
-  // console.log('cdpArray... ', cdpArray)
+  // console.log('asfCdpArray... ', asfCdpArray)
  }
 }
 
@@ -207,7 +208,7 @@ function getBarricadeAircraftSettings(e) {
 
     if (cell && cell_address.c !== 1 && cell_address.c !== 11 && cell_address.c !== 13 && cell_address.c !== 20) {
 
-     (nestedArray).push(cell.v)
+     (asfTmpArray).push(cell.v)
     } else if (!cell) {
      // create a new cdpEndRow_address obj
      let barricadeEndCell_address = {
@@ -219,10 +220,10 @@ function getBarricadeAircraftSettings(e) {
     }
    }
 
-   barricadeArray.push(nestedArray);
-   nestedArray = [];
+   asfBarricadeArray.push(asfTmpArray);
+   asfTmpArray = [];
   }
-  // console.log('barricadeArray... ', barricadeArray)
+  // console.log('asfBarricadeArray... ', asfBarricadeArray)
  }
 }
 
@@ -277,28 +278,31 @@ function loadArrestmentFile() {
 
        let headerValue = XLSX.utils.encode_cell(headerValue_address)
        let cellValue = sheet[headerValue]
-       arrestLogArray.push(cellValue.v)
+       tmpArray.push(cellValue.v)
 
       }
      } // end of for loop
     } // end of for loop
     
-    // check to see if arrestment is in CDP or Barricade mode
-    if (arrestLogArray[0] !== 0) {
-     isCDP = false;
-     barricadeArrestArray.push(arrestLogArray)
-     // console.log("barricade Array ", barricadeArrestArray)
-     arrestLogArray = []
-     // console.log('arrest log array should be empty...', arrestLogArray)
-    } else {
-     isCDP = true;
-     cdpArrestArray.push(arrestLogArray)
-     // console.log('cdp Arrest Array', cdpArrestArray)
-     arrestLogArray = []
-     // console.log('arrest log array should be empty...', arrestLogArray)
-    }
+    // // check to see if arrestment is in CDP or Barricade mode
+    // if (tmpArray[0] !== 0) {
+    //  isCDP = false;
+    //  barricadeArrestArray.push(tmpArray)
+    //  // console.log("barricade Array ", barricadeArrestArray)
+    //  tmpArray = []
+    //  // console.log('arrest log array should be empty...', tmpArray)
+    // } else {
+    //  isCDP = true;
+    //  cdpArrestArray.push(tmpArray)
+    //  // console.log('cdp Arrtmp', cdpArrestArray)
+    //  tmpArray = []
+    //  // console.log('arrest log array should be empty...', tmpArray)
+    // }
     
-    console.log('CDP arrest mode? ', isCDP)
+    arrestmentArray.push(tmpArray)
+    tmpArray = []
+    console.log('arrestment array... ', arrestmentArray)
+    // console.log('CDP arrest mode? ', isCDP)
     debugger
     if(i === files.length -1){
      $('#compareButton').prop('disabled', false)// enable the compareBtn when parsing is completed
@@ -313,7 +317,7 @@ function compareItems() {
  console.log('inside compareObj function...')
 
  let asfArray = [];
- let aircraftType = arrestLogArray[1];
+//  let aircraftType = arrestLogArray[1];
  let arrestRow
  let arrestDataCell = "Arrest Data"
  let asfRow
@@ -322,19 +326,35 @@ function compareItems() {
  let diffRow
  let diff = 0
 
- for (let i = 0; i < cdpArray.length; i++) {
-  if (isCDP && cdpArray[i][0] === aircraftType) {
-   asfArray = cdpArray[i];
-  } else if (barricadeArray[i][0] === aircraftType) {
-   asfArray = barricadeArray[i];
-  }
+ debugger
+ for(i = 0; i < arrestmentArray.length; i++){
+   for(j = 0; j < arrestmentArray[i].length; j++){
+    if(arrestmentArray[i][0] === 0 && arrestmentArray[i][1] === asfCdpArray[i][0]){
+      console.log('it is cdp arrestment... ')
+      for (k = 0; k < asfCdpArray[i].length; k++) {
+        asfDataCell += "<td>" + asfCdpArray[i].toFixed(1) + "</td>"
+       }
+       asfRow = "<tr><td>" + asfDataCell + "</td></tr>"
+       $("table tbody").append(asfRow)
+    }else if(arrestmentArray[i][0] === 1){
+      console.log('it is barricade arrestment... ')
+    }
+   }
  }
 
- for (i = 0; i < asfArray.length; i++) {
-  asfDataCell += "<td>" + asfArray[i].toFixed(1) + "</td>"
- }
- asfRow = "<tr><td>" + asfDataCell + "</td></tr>"
- $("table tbody").append(asfRow)
+//  for (let i = 0; i < cdpArray.length; i++) {
+//   if (isCDP && cdpArray[i][0] === aircraftType) {
+//    asfArray = cdpArray[i];
+//   } else if (barricadeArray[i][0] === aircraftType) {
+//    asfArray = barricadeArray[i];
+//   }
+//  }
+
+//  for (i = 0; i < asfArray.length; i++) {
+//   asfDataCell += "<td>" + asfArray[i].toFixed(1) + "</td>"
+//  }
+//  asfRow = "<tr><td>" + asfDataCell + "</td></tr>"
+//  $("table tbody").append(asfRow)
 
  debugger
  for (let i = 1; i < arrestLogArray.length; i++) {
