@@ -332,7 +332,7 @@ function getComparisonResults(asfArray, arrestmentArray){
     if (diff > 0.2) {
      diffCell += "<td bgcolor=yellow>" + diff + "</td>"
     }else {
-     diffCell += "<td>" + diff + "</td>"
+     diffCell += "<td bgcolor=green>" + diff + "</td>"
     }
    }
    asfRow = "<tr><td>" + asfDataCell + "</td></tr>"
