@@ -332,7 +332,7 @@ function compareItems() {
     if(arrestmentArray[i][0] === 0 && arrestmentArray[i][1] === asfCdpArray[i][0]){
       console.log('it is cdp arrestment... ')
       for (k = 0; k < asfCdpArray[i].length; k++) {
-        asfDataCell += "<td>" + asfCdpArray[i].toFixed(1) + "</td>"
+        asfDataCell += "<td>" + asfCdpArray[i][k].toFixed(1) + "</td>"
        }
        asfRow = "<tr><td>" + asfDataCell + "</td></tr>"
        $("table tbody").append(asfRow)
