@@ -16,7 +16,7 @@ let barricadeArray = [];
 let barricadeArrestArray = [];
 let arrestLogArray = []
 let headerArray = ["recoveryType", "Aircraft Type", "xTrack", "Kic", "Kd", "Joff", "Aircraft Mass", "Aircraft Thrust", "Id", "kFactor", "Blanking Plate", "XF", "KicFactor", "KdFactor", "XfFactor", "velocityThreshold", "Shock Absorber", "Cable Span", "KalmanQ11", " KalmanQ22", " KalmanVelocityInit", " KalmanPositionOffset", " KalmanR50", " KalmanR100", " KalmanR150", " CsaExponent", " CsaTimeConstant", " CsaPayoutOffset", " InvOmegaFilterBandwidth", " InvObserverBandwidthGain", " InvObserverDampingGain", " OmegaNotchEnable", " SteeringGain", " CatchThreshold", " BoostEnable", " CatchP", " CatchI", " CatchErrorFilter", " TrackP", " TrackI", " TrackD", " TrackErrorFilter", " TrackLeadFilter", " InitAccelerationGain", " LoadingRate", " CsaVelocityGain", " DesiredAlphaGain", " DesiredAlphaFilter", " TwisterTorqueGain", " CableTensionGain", " MaxRunoutVelocity", " MinRunoutVelocity", " MinRunout", " PressureDetectionEnable", " PressureEnableSpeed", " PressureDisableSpeed", " KFactorGain", " KFactorThreshold", " PressurePowerGain", " PressurePowerThreshold", " PressureEdgeThreshold", " PressureEdgePower", " MaxDumpEnergyMotor", " MaxDumpEnergyBrake", " MaxEnergyXtrack", " MaxEnergyXf", " MinMotorEfficiency", " MaxMotorEfficiency", " OverrideThreshold", " BrakeModelDelay", " BrakeTorqueGain", " BrakePhaseIn", " TorqueThreshold", " PercentTorqueBrake", " SafetynetEnvelope", " SafetynetThreshold", " SafetynetP", " SafetynetI", " SafetynetD", " SafetynetFilter", " SafetynetLeadFilter", " MinDriftCounts", " MaxDriftCounts"]
-let strTable = "";
+
 
 function loadASF() {
 
@@ -30,8 +30,8 @@ function loadASF() {
 
   getFirstLastRowsAsfFile(e);
   createTable(headerArray)
-  getCdpAircraftSettings(e);
-  getBarricadeAircraftSettings(e)
+  getCdpAircraftsFromASF(e);
+  getBarricadeAircraftsFromASF(e)
  });
 }
 
@@ -124,7 +124,7 @@ function getFirstLastRowsAsfFile(e) {
  }
 }
 
-function getCdpAircraftSettings(e) {
+function getCdpAircraftsFromASF(e) {
  let reader = new FileReader();
  reader.readAsArrayBuffer(e.target.files[0]);
 
@@ -174,7 +174,7 @@ function getCdpAircraftSettings(e) {
  }
 }
 
-function getBarricadeAircraftSettings(e) {
+function getBarricadeAircraftsFromASF(e) {
  let reader = new FileReader();
  reader.readAsArrayBuffer(e.target.files[0]);
 

@@ -30,7 +30,6 @@ function loadASF() {
   }
 
   getFirstLastRowsAsfFile(e);
-  createTable(headerArray)
   getCdpAircraftSettings(e);
   getBarricadeAircraftSettings(e)
  });
@@ -283,29 +282,14 @@ function loadArrestmentFile() {
       }
      } // end of for loop
     } // end of for loop
-    
-    // // check to see if arrestment is in CDP or Barricade mode
-    // if (tmpArray[0] !== 0) {
-    //  isCDP = false;
-    //  barricadeArrestArray.push(tmpArray)
-    //  // console.log("barricade Array ", barricadeArrestArray)
-    //  tmpArray = []
-    //  // console.log('arrest log array should be empty...', tmpArray)
-    // } else {
-    //  isCDP = true;
-    //  cdpArrestArray.push(tmpArray)
-    //  // console.log('cdp Arrtmp', cdpArrestArray)
-    //  tmpArray = []
-    //  // console.log('arrest log array should be empty...', tmpArray)
-    // }
-    
+
     arrestmentArray.push(tmpArray)
     tmpArray = []
     console.log('arrestment array... ', arrestmentArray)
     // console.log('CDP arrest mode? ', isCDP)
     debugger
-    if(i === files.length -1){
-     $('#compareButton').prop('disabled', false)// enable the compareBtn when parsing is completed
+    if (i === files.length - 1) {
+     $('#compareButton').prop('disabled', false) // enable the compareBtn when parsing is completed
     }
    } //end of function reader.onload()
 
@@ -316,64 +300,52 @@ function loadArrestmentFile() {
 function compareItems() {
  console.log('inside compareObj function...')
 
- let asfArray = [];
-//  let aircraftType = arrestLogArray[1];
- let arrestRow
- let arrestDataCell = "Arrest Data"
- let asfRow
- let asfDataCell = "ASF Data"
- let diffCell = "Difference"
- let diffRow
- let diff = 0
-
  debugger
- for(i = 0; i < arrestmentArray.length; i++){
-   for(j = 0; j < arrestmentArray[i].length; j++){
-    if(arrestmentArray[i][0] === 0 && arrestmentArray[i][1] === asfCdpArray[i][0]){
-      console.log('it is cdp arrestment... ')
-      for (k = 0; k < asfCdpArray[i].length; k++) {
-        asfDataCell += "<td>" + asfCdpArray[i][k].toFixed(1) + "</td>"
-       }
-       asfRow = "<tr><td>" + asfDataCell + "</td></tr>"
-       $("table tbody").append(asfRow)
-       arrestmentArray = arrestmentArray.pop(arrestmentArray[i])
-    }else if(arrestmentArray[i][0] === 1){
-      console.log('it is barricade arrestment... ')
+
+ for (i = 0; i < arrestmentArray.length; i++) {
+  if (arrestmentArray[i][0] === 0) {
+   console.log('it is cdp arrestment... ')
+   getComparisonResults(asfCdpArray, arrestmentArray)
+  } else if(arrestmentArray[i][0] === 1){
+   getComparisonResults(asfBarricadeArray, arrestmentArray)
+  }
+ } 
+}
+
+function getComparisonResults(asfArray, arrestmentArray){
+  let arrestRow
+  let arrestDataCell = "Arrest Data"
+  let asfRow
+  let asfDataCell = "ASF Data"
+  let diffCell = "Difference"
+  let diffRow
+  let diff = 0
+ createTable(headerArray)
+ for (j = 0; j < asfArray.length; j++) {
+  if (arrestmentArray[i][1] === asfArray[j][0]) {
+   for (k = 0; k < asfArray[j].length; k++) {
+    asfDataCell += "<td>" + asfArray[j][k].toFixed(1) + "</td>"
+    arrestDataCell += "<td>" + arrestmentArray[i][k + 1].toFixed(1) + "</td>"
+
+    diff = Math.abs((asfArray[j][k] - arrestmentArray[i][k + 1]).toFixed(1));
+    
+    if (diff > 0.2) {
+     diffCell += "<td bgcolor=yellow>" + diff + "</td>"
+    }else {
+     diffCell += "<td>" + diff + "</td>"
     }
    }
- }
+   asfRow = "<tr><td>" + asfDataCell + "</td></tr>"
+   $("table tbody").append(asfRow)
 
-//  for (let i = 0; i < cdpArray.length; i++) {
-//   if (isCDP && cdpArray[i][0] === aircraftType) {
-//    asfArray = cdpArray[i];
-//   } else if (barricadeArray[i][0] === aircraftType) {
-//    asfArray = barricadeArray[i];
-//   }
-//  }
+   arrestRow = "<tr><td>" + arrestDataCell + "</td></tr>"
+   $("table tbody").append(arrestRow)
 
-//  for (i = 0; i < asfArray.length; i++) {
-//   asfDataCell += "<td>" + asfArray[i].toFixed(1) + "</td>"
-//  }
-//  asfRow = "<tr><td>" + asfDataCell + "</td></tr>"
-//  $("table tbody").append(asfRow)
-
- debugger
- for (let i = 1; i < arrestLogArray.length; i++) {
-  arrestDataCell += "<td>" + arrestLogArray[i].toFixed(1) + "</td>"
-  diff = Math.abs((asfArray[i - 1] - arrestLogArray[i]).toFixed(1));
-  if (diff > 0.2) {
-   $("td")[i].style.backgroundColor = "yellow"
+   diffRow = "<tr><td>" + diffCell + "</td></tr>"
+   $("table tbody").append(diffRow)
   }
-  diffCell += "<td>" + diff + "</td>"
-
  }
- debugger
- arrestRow = "<tr><td>" + arrestDataCell + "</td></tr>"
- $("table tbody").append(arrestRow)
-
- diffRow = "<tr><td>" + diffCell + "</td></tr>"
- $("table tbody").append(diffRow)
-
+ $("table tbody").append("<tr height=50px></tr>")
 }
 
 function createTable(arrHeader) {
