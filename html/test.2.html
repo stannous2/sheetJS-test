@@ -48,7 +48,7 @@
   const asfText = $('#asf-button-text');
 
   const inputLogFile = $('#input-arrestlog')
-  const loadLogButton = $('#arrestlog-load-button')
+  const loadLogArrestButton = $('#arrestlog-load-button')
   const arrestlogText = $('#arrestlog-button-text')
 
   const inputColumnHeaderFile = $('#input-columnHeaderFile')
@@ -61,8 +61,8 @@
    loadASF()
   })
 
-  loadLogButton.on('click', function () {
-   console.log('loadLogButton is clicked... ')
+  loadLogArrestButton.on('click', function () {
+   console.log('loadArrestLogButton is clicked... ')
    inputLogFile.click()
    loadArrestmentFile()
   })

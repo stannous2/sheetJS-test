@@ -18,8 +18,7 @@ let arrestCdpArray = [];
 let arrestBarricadeArray = [];
 let tmpArray = [];
 let arrestmentArray = [];
-// let headerArray = ["recoveryType", "Aircraft Type", "xTrack", "Kic", "Kd", "Joff", "Aircraft Mass", "Aircraft Thrust", "Id", "kFactor", "Blanking Plate", "XF", "KicFactor", "KdFactor", "XfFactor", "velocityThreshold", "Shock Absorber", "Cable Span", "KalmanQ11", " KalmanQ22", " KalmanVelocityInit", " KalmanPositionOffset", " KalmanR50", " KalmanR100", " KalmanR150", " CsaExponent", " CsaTimeConstant", " CsaPayoutOffset", " InvOmegaFilterBandwidth", " InvObserverBandwidthGain", " InvObserverDampingGain", " OmegaNotchEnable", " SteeringGain", " CatchThreshold", " BoostEnable", " CatchP", " CatchI", " CatchErrorFilter", " TrackP", " TrackI", " TrackD", " TrackErrorFilter", " TrackLeadFilter", " InitAccelerationGain", " LoadingRate", " CsaVelocityGain", " DesiredAlphaGain", " DesiredAlphaFilter", " TwisterTorqueGain", " CableTensionGain", " MaxRunoutVelocity", " MinRunoutVelocity", " MinRunout", " PressureDetectionEnable", " PressureEnableSpeed", " PressureDisableSpeed", " KFactorGain", " KFactorThreshold", " PressurePowerGain", " PressurePowerThreshold", " PressureEdgeThreshold", " PressureEdgePower", " MaxDumpEnergyMotor", " MaxDumpEnergyBrake", " MaxEnergyXtrack", " MaxEnergyXf", " MinMotorEfficiency", " MaxMotorEfficiency", " OverrideThreshold", " BrakeModelDelay", " BrakeTorqueGain", " BrakePhaseIn", " TorqueThreshold", " PercentTorqueBrake", " SafetynetEnvelope", " SafetynetThreshold", " SafetynetP", " SafetynetI", " SafetynetD", " SafetynetFilter", " SafetynetLeadFilter", " MinDriftCounts", " MaxDriftCounts"]
-let headerArray = []
+let headerArray = ["recoveryType", "Aircraft Type", "xTrack", "Kic", "Kd", "Joff", "Aircraft Mass", "Aircraft Thrust", "Id", "kFactor", "Blanking Plate", "XF", "KicFactor", "KdFactor", "XfFactor", "velocityThreshold", "Shock Absorber", "Cable Span", "KalmanQ11", " KalmanQ22", " KalmanVelocityInit", " KalmanPositionOffset", " KalmanR50", " KalmanR100", " KalmanR150", " CsaExponent", " CsaTimeConstant", " CsaPayoutOffset", " InvOmegaFilterBandwidth", " InvObserverBandwidthGain", " InvObserverDampingGain", " OmegaNotchEnable", " SteeringGain", " CatchThreshold", " BoostEnable", " CatchP", " CatchI", " CatchErrorFilter", " TrackP", " TrackI", " TrackD", " TrackErrorFilter", " TrackLeadFilter", " InitAccelerationGain", " LoadingRate", " CsaVelocityGain", " DesiredAlphaGain", " DesiredAlphaFilter", " TwisterTorqueGain", " CableTensionGain", " MaxRunoutVelocity", " MinRunoutVelocity", " MinRunout", " PressureDetectionEnable", " PressureEnableSpeed", " PressureDisableSpeed", " KFactorGain", " KFactorThreshold", " PressurePowerGain", " PressurePowerThreshold", " PressureEdgeThreshold", " PressureEdgePower", " MaxDumpEnergyMotor", " MaxDumpEnergyBrake", " MaxEnergyXtrack", " MaxEnergyXf", " MinMotorEfficiency", " MaxMotorEfficiency", " OverrideThreshold", " BrakeModelDelay", " BrakeTorqueGain", " BrakePhaseIn", " TorqueThreshold", " PercentTorqueBrake", " SafetynetEnvelope", " SafetynetThreshold", " SafetynetP", " SafetynetI", " SafetynetD", " SafetynetFilter", " SafetynetLeadFilter", " MinDriftCounts", " MaxDriftCounts"]
 let strTable = "";
 
 function loadASF() {
@@ -230,9 +229,9 @@ function getBarricadeAircraftSettings(e) {
 }
 
 function loadArrestmentFile() {
-  inputLogFile.change(function (e) {
+  $('#input-arrestLog').change(function (e) {
     console.log("Load Arretment Log button is clicked...")
-    console.log('header array dynamic ', headerArray)
+    // let fileList = []
     debugger
     var files = inputLogFile[0].files;
     for (let i = 0; i < files.length; i++) {
@@ -272,7 +271,7 @@ function loadArrestmentFile() {
             let cell_ref = XLSX.utils.encode_cell(cell_address);
             let cell = sheet[cell_ref]
 
-            if (cell && headerArray.includes(cell.v.toString().replace(/\s+/g, '').trim())) {
+            if (cell && headerArray.includes(cell.v)) {
               let headerValue_address = {
                 c: C,
                 r: R + 1
@@ -361,35 +360,16 @@ function createTable(arrHeader) {
   $("table tbody").append(headerRow)
 }
 
-function getASFColumnHeaders() {
- inputColumnHeaderFile.change(function (e) {
+function parseHeaderFile() {
+  // Reading data in utf-8 format 
+  // which is a type of character set. 
+  // Instead of 'utf-8' it can be  
+  // other character set also like 'ascii' 
+  fs.readFile('Input.txt', 'utf-8', (err, data) => {
+    if (err) throw err;
 
-  var f = e.target.files[0];
-  if (!f) {
-   alert("Failed to load file")
-  } else if (!f.type.match('text.*')) {
-   alert(f.name + " is not a valid text file.")
-  } else {
-   let r = new FileReader();
-   r.onload = function (e) {
-    let contents = e.target.result;
-
-    headerArray = contents.toString().replace(/\s+/g, ' ').split(",")
-    console.log('list ', headerArray)
-
-    let forDeletion = ["Min Runout", "Maximum Runout", "Cross Wind Limit", "Aircraft Name"]
-    headerArray = headerArray.filter(item => !forDeletion.includes(item))
-    headerArray.unshift("recoveryType")
-    console.log('shortern array ', headerArray)
-
-    headerArray.forEach(function(e) {
-     e = e.toString().trim()
-    })
-
-    console.log('trimmed array ', headerArray)
-   }
-   r.readAsText(f);
-
-  }
- })
+    // Converting Raw Buffer to text 
+    // data using tostring function. 
+    console.log(data);
+  })
 }
