@@ -1,8 +1,5 @@
 // const fs = require('fs')
 
-let arr1 = [];
-let arr2 = [];
-let array = [];
 let cdpStartRow_address;
 let cdpStartRow;
 let cdpEndRow;
@@ -10,7 +7,6 @@ let barricadeStartRow_address;
 let barricadeStartRow;
 let barricadeEndRow;
 let counter = 0;
-let isCDP = true;
 let asfTmpArray = [];
 let asfCdpArray = [];
 let asfBarricadeArray = [];
@@ -18,9 +14,10 @@ let arrestCdpArray = [];
 let arrestBarricadeArray = [];
 let tmpArray = [];
 let arrestmentArray = [];
-// let headerArray = ["recoveryType", "Aircraft Type", "xTrack", "Kic", "Kd", "Joff", "Aircraft Mass", "Aircraft Thrust", "Id", "kFactor", "Blanking Plate", "XF", "KicFactor", "KdFactor", "XfFactor", "velocityThreshold", "Shock Absorber", "Cable Span", "KalmanQ11", " KalmanQ22", " KalmanVelocityInit", " KalmanPositionOffset", " KalmanR50", " KalmanR100", " KalmanR150", " CsaExponent", " CsaTimeConstant", " CsaPayoutOffset", " InvOmegaFilterBandwidth", " InvObserverBandwidthGain", " InvObserverDampingGain", " OmegaNotchEnable", " SteeringGain", " CatchThreshold", " BoostEnable", " CatchP", " CatchI", " CatchErrorFilter", " TrackP", " TrackI", " TrackD", " TrackErrorFilter", " TrackLeadFilter", " InitAccelerationGain", " LoadingRate", " CsaVelocityGain", " DesiredAlphaGain", " DesiredAlphaFilter", " TwisterTorqueGain", " CableTensionGain", " MaxRunoutVelocity", " MinRunoutVelocity", " MinRunout", " PressureDetectionEnable", " PressureEnableSpeed", " PressureDisableSpeed", " KFactorGain", " KFactorThreshold", " PressurePowerGain", " PressurePowerThreshold", " PressureEdgeThreshold", " PressureEdgePower", " MaxDumpEnergyMotor", " MaxDumpEnergyBrake", " MaxEnergyXtrack", " MaxEnergyXf", " MinMotorEfficiency", " MaxMotorEfficiency", " OverrideThreshold", " BrakeModelDelay", " BrakeTorqueGain", " BrakePhaseIn", " TorqueThreshold", " PercentTorqueBrake", " SafetynetEnvelope", " SafetynetThreshold", " SafetynetP", " SafetynetI", " SafetynetD", " SafetynetFilter", " SafetynetLeadFilter", " MinDriftCounts", " MaxDriftCounts"]
 let headerArray = []
-let strTable = "";
+let isHeaderFileLoaded = false;
+let isAsfFileLoaded = false;
+let isArrestLogFileLoaded = false;
 
 function loadASF() {
 
@@ -31,7 +28,6 @@ function loadASF() {
     } else {
       asfText.html() = "No file chosen yet..."
     }
-
     getFirstLastRowsAsfFile(e);
     getCdpAircraftSettings(e);
     getBarricadeAircraftSettings(e)
@@ -54,13 +50,10 @@ function getFirstLastRowsAsfFile(e) {
     let sheet = wb.Sheets[wb.SheetNames[0]]; //get the first worksheet
 
     /* loop through every cell in the worksheet manually */
-    // let range = XLSX.utils.decode_range(sheet['!ref']); //get the range
-
     let range = XLSX.utils.decode_range("A2:A30"); //get range of first 30 rows of column A
 
     for (let R = 1; R <= range.e.r; ++R) {
       for (let C = range.s.c; C <= range.e.c; ++C) {
-
         /* find the cell object */
         let cell_address = {
           c: C,
@@ -69,23 +62,19 @@ function getFirstLastRowsAsfFile(e) {
 
         /* if an A1-style address is needed, encode the address */
         let cell_ref = XLSX.utils.encode_cell(cell_address);
-
         let cell = sheet[cell_ref]
 
         //get the cell ref where its value is 'CDP 1,2,3,4'
         if (cell) {
           if (cell.v === ("CDP 1,2,3,4")) {
-
             // set the starting row address of CDP
             cdpStartRow_address = {
               c: C,
               r: R + 1
             }
-
             cdpStartRow = XLSX.utils.encode_cell(cdpStartRow_address); // create new cell ref for CDP start row
           }
           if (cell.v === ("Barricade 3,4")) {
-
             //set starting row address for Barricade
             barricadeStartRow_address = {
               c: C,
@@ -94,7 +83,6 @@ function getFirstLastRowsAsfFile(e) {
 
             barricadeStartRow = XLSX.utils.encode_cell(barricadeStartRow_address); // create new cell ref for Barricade start row
           }
-
         }
         if (!cell) {
           if (counter === 1) {
@@ -188,7 +176,6 @@ function getBarricadeAircraftSettings(e) {
     let wb = XLSX.read(data, {
       type: 'array'
     }); //parse the file
-
     let sheet = wb.Sheets[wb.SheetNames[0]]; //get the first worksheet
 
     barricade_range = barricadeStartRow + ":CN" + (barricadeEndRow_address.r + 1);
@@ -196,20 +183,15 @@ function getBarricadeAircraftSettings(e) {
 
     for (let R = barricadeStartRow_address.r; R <= range.e.r; ++R) {
       for (let C = range.s.c; C <= range.e.c; ++C) {
-
         /* find the cell object */
         let cell_address = {
           c: C,
           r: R
         };
-
         /* if an A1-style address is needed, encode the address */
         let cell_ref = XLSX.utils.encode_cell(cell_address);
-
         let cell = sheet[cell_ref]
-
         if (cell && cell_address.c !== 1 && cell_address.c !== 11 && cell_address.c !== 13 && cell_address.c !== 20) {
-
           (asfTmpArray).push(cell.v)
         } else if (!cell) {
           // create a new cdpEndRow_address obj
@@ -221,11 +203,9 @@ function getBarricadeAircraftSettings(e) {
           range.e.c = barricadeEndCell_address.c;
         }
       }
-
       asfBarricadeArray.push(asfTmpArray);
       asfTmpArray = [];
     }
-    // console.log('asfBarricadeArray... ', asfBarricadeArray)
   }
 }
 
@@ -257,7 +237,7 @@ function loadArrestmentFile() {
         let sheet = wb.Sheets[wb.SheetNames[0]]; //get the first worksheet
 
         let cell_range = XLSX.utils.decode_range("AA1:DG1") // get the desired range only
-        
+
         // these two for loops are to get all cell values in the specified range and store them in an array 
         for (let R = cell_range.s.r; R <= cell_range.e.r; ++R) {
           for (let C = cell_range.s.c; C <= cell_range.e.c; ++C) {
@@ -277,11 +257,11 @@ function loadArrestmentFile() {
                 c: C,
                 r: R + 1
               }
-              
+
               let headerValue = XLSX.utils.encode_cell(headerValue_address)
               let cellValue = sheet[headerValue]
               tmpArray.push(cellValue.v)
-              
+
             }
           } // end of for loop
         } // end of for loop
@@ -295,15 +275,13 @@ function loadArrestmentFile() {
           $('#compareButton').prop('disabled', false) // enable the compareBtn when parsing is completed
         }
       } //end of function reader.onload()
-
     }
   });
+  isArrestLogFileLoaded = true;
 } //end of function loadArrestmentFile()
 
 function compareItems() {
-  console.log('inside compareObj function...')
-
-  debugger
+  console.log('inside compareItems function...')
 
   for (i = 0; i < arrestmentArray.length; i++) {
     if (arrestmentArray[i][0] === 0) {
@@ -362,31 +340,31 @@ function createTable(arrHeader) {
 }
 
 function getASFColumnHeaders() {
- inputColumnHeaderFile.change(function (e) {
+  inputColumnHeaderFile.change(function (e) {
 
-  var f = e.target.files[0];
-  if (!f) {
-   alert("Failed to load file")
-  } else if (!f.type.match('text.*')) {
-   alert(f.name + " is not a valid text file.")
-  } else {
-   let r = new FileReader();
-   r.onload = function (e) {
-    let contents = e.target.result;
+    var f = e.target.files[0];
+    if (!f) {
+      alert("Failed to load file")
+    } else if (!f.type.match('text.*')) {
+      alert(f.name + " is not a valid text file.")
+    } else {
+      let r = new FileReader();
+      r.onload = function (e) {
+        let contents = e.target.result;
 
-    headerArray = contents.toString().replace(/\s+/g, ' ').split(",")
-    headerArray = headerArray.map(function (el) {
-      return el.trim();
-    });
-    
-    let forDeletion = ["Min Runout", "Maximum Runout", "Cross Wind Limit", "Aircraft Name"]
-    headerArray = headerArray.filter(item => !forDeletion.includes(item))
-    headerArray.unshift("recoveryType")
+        headerArray = contents.toString().replace(/\s+/g, ' ').split(",")
+        headerArray = headerArray.map(function (el) {
+          return el.trim();
+        });
 
-    console.log('trimmed array ', headerArray)
-   }
-   r.readAsText(f);
+        let forDeletion = ["Min Runout", "Maximum Runout", "Cross Wind Limit", "Aircraft Name"]
+        headerArray = headerArray.filter(item => !forDeletion.includes(item))
+        headerArray.unshift("recoveryType")
 
-  }
- })
+        console.log('trimmed array ', headerArray)
+        isHeaderFileLoaded = true
+      }
+      r.readAsText(f);
+    }
+  })
 }

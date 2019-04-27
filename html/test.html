@@ -62,9 +62,13 @@
   })
 
   loadLogButton.on('click', function () {
-   console.log('loadLogButton is clicked... ')
-   inputLogFile.click()
-   loadArrestmentFile()
+    console.log('loadLogButton is clicked... ')
+    if(isHeaderFileLoaded){
+      inputLogFile.click()
+      loadArrestmentFile()
+    } else{
+      alert("Please select a valid ColumnHeaderFile.txt first")
+    }
   })
 
   loadColumnHeaderFileButton.on('click', function () {
