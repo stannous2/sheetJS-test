@@ -257,8 +257,7 @@ function loadArrestmentFile() {
         let sheet = wb.Sheets[wb.SheetNames[0]]; //get the first worksheet
 
         let cell_range = XLSX.utils.decode_range("AA1:DG1") // get the desired range only
-        debugger
-        let tempHeaderArr = []
+        
         // these two for loops are to get all cell values in the specified range and store them in an array 
         for (let R = cell_range.s.r; R <= cell_range.e.r; ++R) {
           for (let C = cell_range.s.c; C <= cell_range.e.c; ++C) {
@@ -269,22 +268,11 @@ function loadArrestmentFile() {
               r: R
             };
 
-            let value 
             /* if an A1-style address is needed, encode the address */
             let cell_ref = XLSX.utils.encode_cell(cell_address);
             let cell = sheet[cell_ref]
 
-            value = cell.v.toString().trim()
-            // tempHeaderArr.push(cell.v)
-            // tempHeaderArr = tempHeaderArr.map(function (ele) {
-            //   return ele.trim()
-            // })
-            // console.log ('tempHeaderArr ', tempHeaderArr)
-            // console.log ('value ', value)
-
-
-
-            if (cell && headerArray.includes(value)) {
+            if (cell && headerArray.includes(cell.v.toString().trim())) {
               let headerValue_address = {
                 c: C,
                 r: R + 1
