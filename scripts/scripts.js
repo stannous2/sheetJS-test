@@ -232,7 +232,7 @@ function getBarricadeAircraftSettings(e) {
 function loadArrestmentFile() {
   inputLogFile.change(function (e) {
     console.log("Load Arretment Log button is clicked...")
-    console.log('header array dynamic ', headerArray)
+    // console.log('header array dynamic ', headerArray)
     debugger
     var files = inputLogFile[0].files;
     for (let i = 0; i < files.length; i++) {
@@ -257,7 +257,8 @@ function loadArrestmentFile() {
         let sheet = wb.Sheets[wb.SheetNames[0]]; //get the first worksheet
 
         let cell_range = XLSX.utils.decode_range("AA1:DG1") // get the desired range only
-
+        debugger
+        let tempHeaderArr = []
         // these two for loops are to get all cell values in the specified range and store them in an array 
         for (let R = cell_range.s.r; R <= cell_range.e.r; ++R) {
           for (let C = cell_range.s.c; C <= cell_range.e.c; ++C) {
@@ -268,20 +269,31 @@ function loadArrestmentFile() {
               r: R
             };
 
+            let value 
             /* if an A1-style address is needed, encode the address */
             let cell_ref = XLSX.utils.encode_cell(cell_address);
             let cell = sheet[cell_ref]
 
-            if (cell && headerArray.includes(cell.v.toString().replace(/\s+/g, '').trim())) {
+            value = cell.v.toString().trim()
+            // tempHeaderArr.push(cell.v)
+            // tempHeaderArr = tempHeaderArr.map(function (ele) {
+            //   return ele.trim()
+            // })
+            // console.log ('tempHeaderArr ', tempHeaderArr)
+            // console.log ('value ', value)
+
+
+
+            if (cell && headerArray.includes(value)) {
               let headerValue_address = {
                 c: C,
                 r: R + 1
               }
-
+              
               let headerValue = XLSX.utils.encode_cell(headerValue_address)
               let cellValue = sheet[headerValue]
               tmpArray.push(cellValue.v)
-
+              
             }
           } // end of for loop
         } // end of for loop
@@ -375,16 +387,13 @@ function getASFColumnHeaders() {
     let contents = e.target.result;
 
     headerArray = contents.toString().replace(/\s+/g, ' ').split(",")
-    console.log('list ', headerArray)
-
+    headerArray = headerArray.map(function (el) {
+      return el.trim();
+    });
+    
     let forDeletion = ["Min Runout", "Maximum Runout", "Cross Wind Limit", "Aircraft Name"]
     headerArray = headerArray.filter(item => !forDeletion.includes(item))
     headerArray.unshift("recoveryType")
-    console.log('shortern array ', headerArray)
-
-    headerArray.forEach(function(e) {
-     e = e.toString().trim()
-    })
 
     console.log('trimmed array ', headerArray)
    }
