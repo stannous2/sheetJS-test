@@ -1,5 +1,6 @@
-table {
+#table {
  border-collapse: collapse;
+ border: solid;
 }
 
 td {
@@ -48,3 +49,14 @@ td {
 .size{
   font-size:12px;
 }
+.custom-file-label {
+ font-size: 14px;
+}
+
+label {
+ font-weight: bold
+}
+#compareButton:disabled {
+ background: gray
+}
+

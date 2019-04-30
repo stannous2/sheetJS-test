@@ -1,116 +1,114 @@
-<html >
+<html>
 
 <head>
-  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
- 
+ <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+
  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
   integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
- 
+
  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.14.1/xlsx.full.min.js"></script>
 
  <link rel="stylesheet" type="text/css" href="../css/style.css">
 
- <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
- 
+ <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+  integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
  <!-- Bootstrap CSS -->
- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+ <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+  integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
  <script src="../scripts/scripts.js"></script>
 </head>
 
 <body>
-<!-- Optional JavaScript -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-  
+ <!-- Optional JavaScript -->
+ <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+ <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+  integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+  integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+ <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+  integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
 
  <div id="navbar"><span>ASF Visual Tool</span></div>
  <div id="wrapper">
+  <form>
+   <div class="form-inline" style="align-items: flex-end">
+    <div class="form-group col-md-3">
+     <label for="asfFileInput">ASF File</label>
+     <div class="custom-file">
+      <label class="custom-file-label" for="asfFileInput" id="asfFilename" style="justify-content: left">Select an ASF
+       file...</label>
+      <input type="file" class="custom-file-input" id="asfFileInput" aridescribedby="asfFileInputAddon">
+     </div>
+    </div>
 
-  <input type="file" id="input-ASF" hidden="hidden" />
-  <button type="button" id="asf-load-button">Load ASF</button>
-  <span id="asf-button-text">No file chosen yet...</span>
-
-  <input type="file" id="input-arrestlog" multiple="multiple" hidden="hidden" />
-  <button type="button" id="arrestlog-load-button">Load Arrestment Log</button>
-  <span id="arrestlog-button-text">No file chosen yet...</span>
-
-  <input type="file" id="input-columnHeaderFile" hidden="hidden" />
-  <button type="button" id="columnHeaderFile-load-button">Load Header File</button>
-  <span id="columnHeaderFile-button-text">No file chosen yet...</span>
-
-  <button id="compareButton" type="button" disabled="disabled">Compare</button>
+    <div class="form-group col-md-3">
+     <label for="inputColHeaderFile">Column Header File</label>
+     <div class="custom-file">
+      <label class="custom-file-label" for="inputColHeaderFile" id="columnHeaderFilename"
+       style="justify-content: left">Select Column Header
+       file...</label>
+      <input type="file" class="custom-file-input" id="inputColHeaderFile" aridescribedby="inputColHeaderFileAddon">
+     </div>
+    </div>
+    <div class="form-group col-md-3">
+     <label for="arrestmentLogFileInput">Arrestment Log Files</label>
+     <div class="custom-file">
+      <label class="custom-file-label" for="arrestmentLogFileInput" id="arrestmentLogFilename"
+       style="justify-content: left">Select Arrestment Log files...</label>
+      <input type="file" class="custom-file-input" id="arrestmentLogFileInput"
+       aridescribedby="arrestmentLogFileInputAddon" multiple>
+     </div>
+    </div>
+    <button type="button" class="btn btn-primary btn-md" id="compareButton" disabled>Compare</button>
+   </div>
+   <div class="form-group col-md-9">
+    <textarea class="form-control" id="arrestmentLogFileTextarea" rows="3"
+     id="arrestmentLogFilename">Click to select Arrestment Log files...</textarea>
+   </div>
+  </form>
 
   <table id="table" style="background-color:aliceblue; width: 700px; height: 200px">
    <tbody>
    </tbody>
   </table>
-
- <!-- Drag and Drop container-->
-  <div class="arrestLog-area"  id="arrestLogFileName">
-    <h4>Drag and Drop ASF file here</h4>
-</div>
-
-<form>
-  <div class="form-row">
-    <div class="form-group col-md-4">
-      <label for="inputAsf">ASF File</label>
-      <input type="text" class="form-control" id="inputAsf" placeholder="Select an ASF File...">
-    </div>
-    <div class="form-group col-md-4">
-      <label for="inputColHeaderFile">Column Header File</label>
-      <input type="text" class="form-control" id="inputColHeaderFile" placeholder="Column Header File...">
-    </div>
-    <div class="form-group col-md-8">
-      <label for="inputArrestmentFile">Arrestment Log Files</label>
-      <input type="text" class="form-control" id="inputArrestmentFile" placeholder="Arrestment Log Files...">
-    </div>
-  </div>
-
-  
-  <button type="submit" class="btn btn-primary">Compare</button>
-</form>
-
  </div>
+
  <script>
-  const inputAsfButton = $('#input-ASF');
-  const loadAsfButton = $('#asf-load-button');
-  const asfText = $('#asf-button-text');
+  const asfFileInput = $('#asfFileInput');
+  const asfFilename = $('#asfFilename');
 
-  const inputLogFile = $('#input-arrestlog')
-  const loadLogButton = $('#arrestlog-load-button')
-  const arrestlogText = $('#arrestlog-button-text')
+  const arrestmentLogFileInput = $('#arrestmentLogFileInput')
+  const arrestmentLogFilename = $('#arrestmentLogFilename')
+  const arrestmentLogFileTextarea = $('#arrestmentLogFileTextarea')
 
-  const inputColumnHeaderFile = $('#input-columnHeaderFile')
-  const loadColumnHeaderFileButton = $('#columnHeaderFile-load-button')
-  const columnHeaderFileText = $('#columnHeaderFile-button-text')
+  const loadColumnHeaderFileButton = $('#inputColHeaderFile')
+  const columnHeaderFilename = $('#columnHeaderFilename')
 
-  loadAsfButton.on('click', function () {
+  const compareButton = $('#compareButton')
+
+  asfFileInput.on('click', function () {
    console.log('loadAsfButton is clicked... ')
-   inputAsfButton.click()
-   loadASF()
+   loadASF();
   })
 
-  loadLogButton.on('click', function () {
-    console.log('loadLogButton is clicked... ')
-    if(isHeaderFileLoaded){
-      inputLogFile.click()
-      loadArrestmentFile()
-    } else{
-      alert("Please select a valid ColumnHeaderFile.txt first")
-    }
+  arrestmentLogFileInput.on('click', function () {
+   console.log('arrestmentLogFileInput is clicked... ')
+   if (isHeaderFileLoaded) {
+    // inputLogFile.click()
+    loadArrestmentFile()
+   } else {
+    alert("Please select a valid ColumnHeaderFile.txt first")
+   }
   })
 
   loadColumnHeaderFileButton.on('click', function () {
-   console.log('load Header File Button is clicked... ')
-   
-   inputColumnHeaderFile.click()
    getASFColumnHeaders()
   })
 
-  $('#compareButton').on('click', function () {
+  compareButton.on('click', function () {
    compareItems()
   })
  </script>
