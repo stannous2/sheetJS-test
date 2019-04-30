@@ -24,7 +24,8 @@ function loadASF() {
   $('#input-ASF').change(function (e) {
     console.log("Getting data...")
     if (inputAsfButton.val()) {
-      asfText.html(inputAsfButton.val().match(/[\/\\]([\w\d\s\.\-\(\)]+)$/)[1])
+      // asfText.html(inputAsfButton.val().match(/[\/\\]([\w\d\s\.\-\(\)]+)$/)[1])
+      $("#inputAsf").val(inputAsfButton.val().match(/[\/\\]([\w\d\s\.\-\(\)]+)$/)[1])
     } else {
       asfText.html() = "No file chosen yet..."
     }
@@ -34,7 +35,7 @@ function loadASF() {
   });
 }
 
-function getFirstLastRowsAsfFile(e) {
+function getFirstLastRowsAsfFile(e) { 
 
   let reader = new FileReader();
   reader.readAsArrayBuffer(e.target.files[0]);
@@ -214,14 +215,18 @@ function loadArrestmentFile() {
     console.log("Load Arretment Log button is clicked...")
     // console.log('header array dynamic ', headerArray)
     debugger
+    let tmpText 
     var files = inputLogFile[0].files;
     for (let i = 0; i < files.length; i++) {
-      $("#arrestLogFileName").append(files[i].name + ", ")
+      // $("#arrestLogFileName").append(files[i].name + ", ")
+      tmpText = files[i].name
+      tmpText += tmpText
+      $("#inputArrestmentFile").append(tmpText)
 
-      if (inputLogFile.val()) {
-        arrestlogText.html("")
-        arrestlogText.append(files[i].name + ", ")
-      }
+      // if (inputLogFile.val()) {
+      //   arrestlogText.html("")
+      //   arrestlogText.append(files[i].name + ", ")
+      // }
 
       let reader = new FileReader();
       reader.readAsArrayBuffer(e.target.files[i]);
@@ -342,12 +347,15 @@ function createTable(arrHeader) {
 function getASFColumnHeaders() {
   inputColumnHeaderFile.change(function (e) {
 
+
+
     var f = e.target.files[0];
     if (!f) {
       alert("Failed to load file")
     } else if (!f.type.match('text.*')) {
       alert(f.name + " is not a valid text file.")
     } else {
+     $("#inputColHeaderFile").val(inputColumnHeaderFile.val().match(/[\/\\]([\w\d\s\.\-\(\)]+)$/)[1])
       let r = new FileReader();
       r.onload = function (e) {
         let contents = e.target.result;
