@@ -21,15 +21,20 @@ let isAsfFileLoaded = false;
 let isArrestLogFileLoaded = false;
 
 function loadASF() {
-
  asfFileInput.change(function (e) {
   console.log("Getting data...")
-  let fileName = asfFileInput[0].files[0].name
-  asfFilename.html(fileName)
-
-  getFirstLastRowsAsfFile(e);
-  getCdpAircraftSettings(e);
-  getBarricadeAircraftSettings(e)
+  var f = e.target.files[0];
+  if (!f) {
+   alert("Failed to load file")
+  } else if (f.name.indexOf("AircraftSettingsFile") === -1 || f.type.match('text/csv')) {
+   alert(f.name + " is not a valid ASF file.")
+  } else {
+   asfFilename.html(f.name)
+   getFirstLastRowsAsfFile(e);
+   getCdpAircraftSettings(e);
+   getBarricadeAircraftSettings(e)
+   isAsfFileLoaded = true
+  }
  });
 }
 
@@ -210,21 +215,23 @@ function getBarricadeAircraftSettings(e) {
 function loadArrestmentFile() {
  arrestmentLogFileInput.change(function (e) {
   console.log("Load Arretment Log button is clicked...")
-  
+
   let fileName = ""
   var files = arrestmentLogFileInput[0].files;
+  
   for (let i = 0; i < files.length; i++) {
    fileName += files[i].name + ", "
-   if(i === files.length-1){
+   if (i === files.length - 1) {
     fileName = fileName.replace(/,\s*$/, "")
    }
-   console.log('countdown counter ', countDown++)
-   compareButton.html(countDown++)
-  };
+   // console.log('countdown counter ', countDown++)
+  }//end of FOR loop
+
   arrestmentLogFileTextarea.html(fileName)
 
   for (let i = 0; i < files.length; i++) {
-   
+   countDown = files.length;
+   console.log('initial countdown counter ', countDown)
    let reader = new FileReader();
    reader.readAsArrayBuffer(e.target.files[i]);
 
@@ -263,23 +270,29 @@ function loadArrestmentFile() {
        let headerValue = XLSX.utils.encode_cell(headerValue_address)
        let cellValue = sheet[headerValue]
        tmpArray.push(cellValue.v)
-
       }
      } // end of for loop
     } // end of for loop
 
     arrestmentArray.push(tmpArray)
     tmpArray = []
-    console.log('arrestment array... ', arrestmentArray)
-    // console.log('CDP arrest mode? ', isCDP)
-    debugger
-    if (i === files.length - 1) {
+
+    console.log('arrestmentArray length ', arrestmentArray.length)
+    
+    countDown--;
+    // compareButton.html(countDown)
+    compareButton.text(countDown)
+    console.log('counting down counter ', countDown)
+    
+    if (countDown === 0) {
      compareButton.prop('disabled', false) // enable the compareBtn when parsing is completed
-    }
+     compareButton.html("Compare")
+     isArrestLogFileLoaded = true;
+     console.log('isArrestLogFileLoaded ', isArrestLogFileLoaded)
+    } 
    } //end of function reader.onload()
-  }
- });
- isArrestLogFileLoaded = true;
+  }// end of files length FOR loop
+ })
 } //end of function loadArrestmentFile()
 
 function compareItems() {

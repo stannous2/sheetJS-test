@@ -89,9 +89,9 @@
 
   const compareButton = $('#compareButton')
 
-  asfFileInput.on('click', function () {
+  asfFileInput.on('click', function (e) {
    console.log('loadAsfButton is clicked... ')
-   loadASF();
+    loadASF();
   })
 
   arrestmentLogFileInput.on('click', function () {
@@ -109,7 +109,11 @@
   })
 
   compareButton.on('click', function () {
-   compareItems()
+   if (isAsfFileLoaded && isHeaderFileLoaded && isArrestLogFileLoaded) {
+    compareItems()
+   } else if (!isAsfFileLoaded) {
+    alert("Select ASF file to proceed.")
+   }
   })
  </script>
 </body>
