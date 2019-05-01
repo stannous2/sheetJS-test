@@ -57,6 +57,7 @@ label {
  font-weight: bold
 }
 #compareButton:disabled {
- background: gray
+ background: gray;
+ color: gray;
 }
 

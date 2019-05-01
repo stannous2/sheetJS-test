@@ -7,6 +7,7 @@ let barricadeStartRow_address;
 let barricadeStartRow;
 let barricadeEndRow;
 let counter = 0;
+let countDown = 0;
 let asfTmpArray = [];
 let asfCdpArray = [];
 let asfBarricadeArray = [];
@@ -18,22 +19,6 @@ let headerArray = []
 let isHeaderFileLoaded = false;
 let isAsfFileLoaded = false;
 let isArrestLogFileLoaded = false;
-
-// function loadASF() {
-
-//   $('#input-ASF').change(function (e) {
-//     console.log("Getting data...")
-//     if (inputAsfButton.val()) {
-//       // asfText.html(inputAsfButton.val().match(/[\/\\]([\w\d\s\.\-\(\)]+)$/)[1])
-//       $("#inputAsf").val(inputAsfButton.val().match(/[\/\\]([\w\d\s\.\-\(\)]+)$/)[1])
-//     } else {
-//       asfText.html() = "No file chosen yet..."
-//     }
-//     getFirstLastRowsAsfFile(e);
-//     getCdpAircraftSettings(e);
-//     getBarricadeAircraftSettings(e)
-//   });
-// }
 
 function loadASF() {
 
@@ -233,6 +218,8 @@ function loadArrestmentFile() {
    if(i === files.length-1){
     fileName = fileName.replace(/,\s*$/, "")
    }
+   console.log('countdown counter ', countDown++)
+   compareButton.html(countDown++)
   };
   arrestmentLogFileTextarea.html(fileName)
 
