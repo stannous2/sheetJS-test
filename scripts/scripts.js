@@ -22,11 +22,12 @@ let isArrestLogFileLoaded = false;
 
 function loadASF() {
  asfFileInput.change(function (e) {
-  console.log("Getting data...")
+  console.log("Loading ASF file...")
   var f = e.target.files[0];
+  let correctAsfFiles = ["AircraftSettingsFile.csv", "AircraftSettingsFile.xlsx"]
   if (!f) {
    alert("Failed to load file")
-  } else if (f.name.indexOf("AircraftSettingsFile") === -1 || !f.type.match('text/csv')) {
+  } else if (!correctAsfFiles.includes(f.name)) {
    alert(f.name + " is not a valid ASF file.")
   } else {
    asfFilename.html(f.name)
