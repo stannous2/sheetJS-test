@@ -26,7 +26,7 @@ function loadASF() {
   var f = e.target.files[0];
   if (!f) {
    alert("Failed to load file")
-  } else if (f.name.indexOf("AircraftSettingsFile") === -1 || f.type.match('text/csv')) {
+  } else if (f.name.indexOf("AircraftSettingsFile") === -1 || !f.type.match('text/csv')) {
    alert(f.name + " is not a valid ASF file.")
   } else {
    asfFilename.html(f.name)
@@ -217,22 +217,24 @@ function loadArrestmentFile() {
   console.log("Load Arretment Log button is clicked...")
 
   let fileName = ""
-  var files = arrestmentLogFileInput[0].files;
+  let files = arrestmentLogFileInput[0].files;
+  let countDown = files.length;
+  let reader
+  compareButton.html("Processing...")
   
   for (let i = 0; i < files.length; i++) {
    fileName += files[i].name + ", "
    if (i === files.length - 1) {
     fileName = fileName.replace(/,\s*$/, "")
    }
-   // console.log('countdown counter ', countDown++)
   }//end of FOR loop
 
   arrestmentLogFileTextarea.html(fileName)
 
   for (let i = 0; i < files.length; i++) {
-   countDown = files.length;
-   console.log('initial countdown counter ', countDown)
-   let reader = new FileReader();
+  //  countDown = files.length;
+  //  console.log('initial countdown counter ', countDown)
+   reader = new FileReader();
    reader.readAsArrayBuffer(e.target.files[i]);
 
    reader.onload = function (e) {
@@ -278,10 +280,10 @@ function loadArrestmentFile() {
     tmpArray = []
 
     console.log('arrestmentArray length ', arrestmentArray.length)
+    console.log('arrestmentArray ', arrestmentArray)
     
     countDown--;
     // compareButton.html(countDown)
-    compareButton.text(countDown)
     console.log('counting down counter ', countDown)
     
     if (countDown === 0) {
