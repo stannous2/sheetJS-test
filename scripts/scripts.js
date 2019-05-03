@@ -220,7 +220,7 @@ function loadArrestmentFile() {
   let fileName = ""
   let files = arrestmentLogFileInput[0].files;
   let countDown = files.length;
-  let reader
+  
   compareButton.html("Processing...")
   
   for (let i = 0; i < files.length; i++) {
@@ -235,7 +235,7 @@ function loadArrestmentFile() {
   for (let i = 0; i < files.length; i++) {
   //  countDown = files.length;
   //  console.log('initial countdown counter ', countDown)
-   reader = new FileReader();
+   let reader = new FileReader();
    reader.readAsArrayBuffer(e.target.files[i]);
 
    reader.onload = function (e) {
@@ -305,7 +305,7 @@ function compareItems() {
   if (arrestmentArray[i][0] === 0) {
    console.log('it is cdp arrestment... ')
    getComparisonResults(asfCdpArray, arrestmentArray)
-  } else if (arrestmentArray[i][0] === 1) {
+  } else if (arrestmentArray[i][0] === 1.0) {
    getComparisonResults(asfBarricadeArray, arrestmentArray)
   }
  }
