@@ -13,9 +13,9 @@ let asfCdpArray = [];
 let asfBarricadeArray = [];
 let arrestCdpArray = [];
 let arrestBarricadeArray = [];
-let tmpArray = [];
 let arrestmentArray = [];
 let headerArray = []
+let headerCell = ""
 let isHeaderFileLoaded = false;
 let isAsfFileLoaded = false;
 let isArrestLogFileLoaded = false;
@@ -221,6 +221,7 @@ function loadArrestmentFile() {
   let files = arrestmentLogFileInput[0].files;
   let countDown = files.length;
   
+  
   compareButton.html("Processing...")
   
   for (let i = 0; i < files.length; i++) {
@@ -239,6 +240,7 @@ function loadArrestmentFile() {
    reader.readAsArrayBuffer(e.target.files[i]);
 
    reader.onload = function (e) {
+    let tmpArray = [];
     let data = new Uint8Array(reader.result);
 
     /* read the file */
@@ -276,10 +278,12 @@ function loadArrestmentFile() {
       }
      } // end of for loop
     } // end of for loop
-
-    arrestmentArray.push(tmpArray)
-    tmpArray = []
-
+    if (tmpArray[0] === 0){
+      arrestmentArray.unshift(tmpArray)
+    }else if (tmpArray[0] === 1){
+      arrestmentArray.push(tmpArray)
+    }
+    
     console.log('arrestmentArray length ', arrestmentArray.length)
     console.log('arrestmentArray ', arrestmentArray)
     
@@ -304,14 +308,16 @@ function compareItems() {
  for (i = 0; i < arrestmentArray.length; i++) {
   if (arrestmentArray[i][0] === 0) {
    console.log('it is cdp arrestment... ')
-   getComparisonResults(asfCdpArray, arrestmentArray)
+   headerCell = "CDP"
+   getComparisonResults(asfCdpArray, arrestmentArray, headerCell)
   } else if (arrestmentArray[i][0] === 1.0) {
-   getComparisonResults(asfBarricadeArray, arrestmentArray)
+    headerCell = "Bar"
+   getComparisonResults(asfBarricadeArray, arrestmentArray, headerCell)
   }
  }
 }
 
-function getComparisonResults(asfArray, arrestmentArray) {
+function getComparisonResults(asfArray, arrestmentArray, headerCell) {
  let arrestRow
  let arrestDataCell = "Arrest Data"
  let asfRow
@@ -320,7 +326,7 @@ function getComparisonResults(asfArray, arrestmentArray) {
  let diffRow
  let diff = 0
 
- createTable(headerArray)
+ createTable(headerArray, headerCell)
 
  for (j = 0; j < asfArray.length; j++) {
   if (arrestmentArray[i][1] === asfArray[j][0]) {
@@ -349,16 +355,15 @@ function getComparisonResults(asfArray, arrestmentArray) {
  $("table tbody").append("<tr height=50px></tr>")
 }
 
-function createTable(arrHeader) {
- let headerCell = ""
- let headerRow
- for (let i = 1; i < arrHeader.length; i++) {
-  headerCell += "<td>" + arrHeader[i] + "</td>"
- };
- headerRow = "<tr><td>" + headerCell + "</td></tr>"
- $("table tbody").append(headerRow)
-}
+function createTable(arrHeader, headerCell) {
+  let headerRow
 
+  for (let i = 1; i < arrHeader.length; i++) {
+   headerCell += "<td>" + arrHeader[i] + "</td>"
+  };
+  headerRow = "<tr><td>" + headerCell + "</td></tr>"
+  $("table tbody").append(headerRow)
+ }
 function getASFColumnHeaders() {
  loadColumnHeaderFileButton.change(function (e) {
 
