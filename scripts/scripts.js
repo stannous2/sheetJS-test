@@ -307,7 +307,6 @@ function compareItems() {
 
  for (i = 0; i < arrestmentArray.length; i++) {
   if (arrestmentArray[i][0] === 0) {
-   console.log('it is cdp arrestment... ')
    headerCell = "CDP"
    getComparisonResults(asfCdpArray, arrestmentArray, headerCell)
   } else if (arrestmentArray[i][0] === 1.0) {
@@ -364,6 +363,7 @@ function createTable(arrHeader, headerCell) {
   headerRow = "<tr><td>" + headerCell + "</td></tr>"
   $("table tbody").append(headerRow)
  }
+ 
 function getASFColumnHeaders() {
  loadColumnHeaderFileButton.change(function (e) {
 

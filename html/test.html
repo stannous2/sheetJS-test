@@ -32,18 +32,14 @@
 
 
  <!-- <div id="navbar"><span>ASF Visual Tool</span></div> -->
- <nav class="navbar navbar-expand-lg navbar-light bg-light">
-  <a class="navbar-brand" href="#">ASF Visual Tool</a>
-  </nav>
-
- <div id="wrapper">
+ <nav class="navbar navbar-expand-lg navbar-dark">
+  <a class="navbar-brand" href="#">ASF Visual</a>
   <form>
    <div class="form-inline" style="align-items: flex-end">
     <div class="form-group col-md-3">
      <label for="asfFileInput">ASF File</label>
      <div class="custom-file">
-      <label class="custom-file-label" for="asfFileInput" id="asfFilename" style="justify-content: left">Select an ASF
-       file...</label>
+      <label class="custom-file-label" for="asfFileInput" id="asfFilename" style="justify-content: left"></label>
       <input type="file" class="custom-file-input" id="asfFileInput" aridescribedby="asfFileInputAddon" accept=".csv,.xls,.xlsx">
      </div>
     </div>
@@ -52,8 +48,49 @@
      <label for="inputColHeaderFile">Column Header File</label>
      <div class="custom-file">
       <label class="custom-file-label" for="inputColHeaderFile" id="columnHeaderFilename"
-       style="justify-content: left">Select Column Header
-       file...</label>
+       style="justify-content: left"></label>
+      <input type="file" class="custom-file-input" id="inputColHeaderFile" aridescribedby="inputColHeaderFileAddon" accept=".txt">
+     </div>
+    </div>
+
+    <div class="form-group col-md-3">
+     <label for="arrestmentLogFileInput">Arrestment Log Files</label>
+     <div class="custom-file">
+      <label class="custom-file-label" for="arrestmentLogFileInput" id="arrestmentLogFilename"
+       style="justify-content: left"></label>
+      <input type="file" class="custom-file-input" id="arrestmentLogFileInput"
+       aridescribedby="arrestmentLogFileInputAddon" multiple accept=".csv,.xls,.xlsx">
+     </div>
+    </div>
+    
+    <div class="form-group col-md-3 compareButton" >
+      <button type="button" class="btn btn-primary" id="compareButton" disabled>Compare</button>
+    </div>
+
+   </div>
+   
+  </form>
+
+
+
+  </nav>
+
+ <div id="wrapper">
+  <form>
+   <!-- <div class="form-inline" style="align-items: flex-end">
+    <div class="form-group col-md-3">
+     <label for="asfFileInput">ASF File</label>
+     <div class="custom-file">
+      <label class="custom-file-label" for="asfFileInput" id="asfFilename" style="justify-content: left"></label>
+      <input type="file" class="custom-file-input" id="asfFileInput" aridescribedby="asfFileInputAddon" accept=".csv,.xls,.xlsx">
+     </div>
+    </div>
+
+    <div class="form-group col-md-3">
+     <label for="inputColHeaderFile">Column Header File</label>
+     <div class="custom-file">
+      <label class="custom-file-label" for="inputColHeaderFile" id="columnHeaderFilename"
+       style="justify-content: left"></label>
       <input type="file" class="custom-file-input" id="inputColHeaderFile" aridescribedby="inputColHeaderFileAddon" accept=".txt">
      </div>
     </div>
@@ -61,16 +98,17 @@
      <label for="arrestmentLogFileInput">Arrestment Log Files</label>
      <div class="custom-file">
       <label class="custom-file-label" for="arrestmentLogFileInput" id="arrestmentLogFilename"
-       style="justify-content: left">Select Arrestment Log files...</label>
+       style="justify-content: left"></label>
       <input type="file" class="custom-file-input" id="arrestmentLogFileInput"
        aridescribedby="arrestmentLogFileInputAddon" multiple accept=".csv,.xls,.xlsx">
      </div>
     </div>
     <button type="button" class="btn btn-primary" id="compareButton" disabled>Compare</button>
    </div>
+    -->
    <div class="form-group col-md-9">
     <textarea class="form-control" id="arrestmentLogFileTextarea" rows="3"
-     id="arrestmentLogFilename">Click to select Arrestment Log files...</textarea>
+     id="arrestmentLogFilename"></textarea>
    </div>
   </form>
 
