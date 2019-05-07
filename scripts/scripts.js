@@ -20,6 +20,41 @@ let isHeaderFileLoaded = false;
 let isAsfFileLoaded = false;
 let isArrestLogFileLoaded = false;
 
+const asfFileInput = $('#asfFileInput');
+const asfFilename = $('#asfFilename');
+const arrestmentLogFileInput = $('#arrestmentLogFileInput');
+const arrestmentLogFilename = $('#arrestmentLogFilename');
+const arrestmentLogFileTextarea = $('#arrestmentLogFileTextarea');
+const loadColumnHeaderFileButton = $('#inputColHeaderFile');
+const columnHeaderFilename = $('#columnHeaderFilename');
+const compareButton = $('#compareButton');
+
+asfFileInput.on('click', function (e) {
+ console.log('loadAsfButton is clicked... ')
+ loadASF();
+})
+
+arrestmentLogFileInput.on('click', function () {
+ console.log('arrestmentLogFileInput is clicked... ')
+ if (isHeaderFileLoaded) {
+  loadArrestmentFile()
+ } else {
+  alert("Please select a valid ColumnHeaderFile.txt first")
+ }
+})
+
+loadColumnHeaderFileButton.on('click', function () {
+ getASFColumnHeaders()
+})
+
+compareButton.on('click', function () {
+ if (isAsfFileLoaded && isHeaderFileLoaded && isArrestLogFileLoaded) {
+  compareItems()
+ } else if (!isAsfFileLoaded) {
+  alert("Select ASF file to proceed.")
+ }
+})
+
 function loadASF() {
  asfFileInput.change(function (e) {
   console.log("Loading ASF file...")
@@ -220,22 +255,22 @@ function loadArrestmentFile() {
   let fileName = ""
   let files = arrestmentLogFileInput[0].files;
   let countDown = files.length;
-  
-  
+
+
   compareButton.html("Processing...")
-  
+
   for (let i = 0; i < files.length; i++) {
    fileName += files[i].name + ", "
    if (i === files.length - 1) {
     fileName = fileName.replace(/,\s*$/, "")
    }
-  }//end of FOR loop
+  } //end of FOR loop
 
   arrestmentLogFileTextarea.html(fileName)
 
   for (let i = 0; i < files.length; i++) {
-  //  countDown = files.length;
-  //  console.log('initial countdown counter ', countDown)
+   //  countDown = files.length;
+   //  console.log('initial countdown counter ', countDown)
    let reader = new FileReader();
    reader.readAsArrayBuffer(e.target.files[i]);
 
@@ -278,27 +313,27 @@ function loadArrestmentFile() {
       }
      } // end of for loop
     } // end of for loop
-    if (tmpArray[0] === 0){
-      arrestmentArray.unshift(tmpArray)
-    }else if (tmpArray[0] === 1){
-      arrestmentArray.push(tmpArray)
+    if (tmpArray[0] === 0) {
+     arrestmentArray.unshift(tmpArray)
+    } else if (tmpArray[0] === 1) {
+     arrestmentArray.push(tmpArray)
     }
-    
+
     console.log('arrestmentArray length ', arrestmentArray.length)
     console.log('arrestmentArray ', arrestmentArray)
-    
+
     countDown--;
     // compareButton.html(countDown)
     console.log('counting down counter ', countDown)
-    
+
     if (countDown === 0) {
      compareButton.prop('disabled', false) // enable the compareBtn when parsing is completed
      compareButton.html("Compare")
      isArrestLogFileLoaded = true;
      console.log('isArrestLogFileLoaded ', isArrestLogFileLoaded)
-    } 
+    }
    } //end of function reader.onload()
-  }// end of files length FOR loop
+  } // end of files length FOR loop
  })
 } //end of function loadArrestmentFile()
 
@@ -310,7 +345,7 @@ function compareItems() {
    headerCell = "CDP"
    getComparisonResults(asfCdpArray, arrestmentArray, headerCell)
   } else if (arrestmentArray[i][0] === 1.0) {
-    headerCell = "Bar"
+   headerCell = "Bar"
    getComparisonResults(asfBarricadeArray, arrestmentArray, headerCell)
   }
  }
@@ -355,15 +390,15 @@ function getComparisonResults(asfArray, arrestmentArray, headerCell) {
 }
 
 function createTable(arrHeader, headerCell) {
-  let headerRow
+ let headerRow
 
-  for (let i = 1; i < arrHeader.length; i++) {
-   headerCell += "<td>" + arrHeader[i] + "</td>"
-  };
-  headerRow = "<tr><td>" + headerCell + "</td></tr>"
-  $("table tbody").append(headerRow)
- }
- 
+ for (let i = 1; i < arrHeader.length; i++) {
+  headerCell += "<td>" + arrHeader[i] + "</td>"
+ };
+ headerRow = "<tr><td>" + headerCell + "</td></tr>"
+ $("table tbody").append(headerRow)
+}
+
 function getASFColumnHeaders() {
  loadColumnHeaderFileButton.change(function (e) {
 
