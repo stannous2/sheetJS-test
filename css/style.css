@@ -59,14 +59,14 @@ label {
 #compareButton:disabled {
  background: rgb(192, 144, 109);
  border: brown;
- width: 135px;
+ width: 145px;
  color: rgb(255, 255, 255);
 }
 
 #compareButton {
  background: chocolate;
  border: brown;
- width: 135px;
+ width: 145px;
  color: rgb(255, 255, 255);
 }
 
