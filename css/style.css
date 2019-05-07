@@ -1,6 +1,8 @@
 #table {
  border-collapse: collapse;
- border: solid;
+ /* border: solid 2px; */
+ /* border-radius: 5px; */
+
 }
 
 td {
@@ -78,3 +80,12 @@ label {
  color: white;
  font-family: monospace
 }
+
+.text-box {
+  max-width: 77%;
+  margin: auto;
+  border: solid 1px;
+  border-radius: 5px;
+  margin-top: 6px;
+}
+
