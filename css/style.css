@@ -58,17 +58,32 @@ label {
  font-weight: bold
 }
 #compareButton:disabled {
- background: rgb(192, 144, 109);
- border: brown;
+ border: #f8f9fa;
  width: 145px;
+ height: 37px;
  color: rgb(255, 255, 255);
+ background: rgb(0,23, 76,1);
+ border-width: 2px;
+ border-color: white;
+ border-style: outset;
+ padding-top: 4px;
 }
 
 #compareButton {
- background: chocolate;
- border: brown;
- width: 145px;
- color: rgb(255, 255, 255);
+ /* background: chocolate;
+ border: brown; */
+ /* width: 145px; */
+ /* color: rgb(255, 255, 255); */
+
+ background: rgb(0,23, 76,1);
+  border: #f8f9fa;
+  width: 145px;
+  height: 37px;
+  color: rgb(255, 255, 255);
+  border-width: 2px;
+  border-color: white;
+  border-style: outset;
+  padding-top: 4px;
 }
 
 .compareButton {
