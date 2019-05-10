@@ -269,6 +269,8 @@ function loadArrestmentFile() {
   arrestmentLogFileTextarea.html(fileName)
 
   for (let i = 0; i < files.length; i++) {
+   //  countDown = files.length;
+   //  console.log('initial countdown counter ', countDown)
    let reader = new FileReader();
    reader.readAsArrayBuffer(e.target.files[i]);
 

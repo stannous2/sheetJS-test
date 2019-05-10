@@ -10,6 +10,9 @@
  display: block;
  overflow: scroll;
  height: 800px;
+ border-style: outset;
+ border-radius: 3px;
+
 }
 
 td {
@@ -77,6 +80,7 @@ label {
  border-color: white;
  border-style: outset;
  padding-top: 4px;
+ margin-top: 10px;
 }
 
 #compareButton {
@@ -89,6 +93,8 @@ label {
  border-color: white;
  border-style: outset;
  padding-top: 4px;
+ margin-top: 10px;
+
 }
 
 .compareButton {
@@ -109,13 +115,6 @@ label {
  margin-top: 6px;
 }
 
-#resultTextarea {
- border-color: black;
- border: 2px solid black;
- height: 500px;
- margin: auto;
- display: flex;
- max-width: 100%;
- width: 1000px;
- max-height: 100%;
+.custom-file:hover {
+  opacity: 0.5;
 }
